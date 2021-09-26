@@ -18,8 +18,8 @@ sudo smbpasswd -a john
 echo ""
 
 echo "# Create Share Folder"
-mkdir /home/john/share
-chmod 0777 /home/john/share
+sudo mkdir /share
+sudo chmod 0777 /share
 echo ""
 
 echo "# Configure Samba"
@@ -38,7 +38,7 @@ echo "~~~"
 echo "add to bottom of configuration"
 echo "~~~"
 echo "[share]"
-echo "	path = /home/john/share"
+echo "	path = /share"
 echo "	read only = no"
 echo "	public = no"
 echo "	writeable = yes"

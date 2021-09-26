@@ -1,12 +1,11 @@
 #!/bin/sh
 
-echo "# Install Pi-hole"
-curl -sSL https://install.pi-hole.net | bash # accept all default options
+echo "# Install Pi-hole - accept all default options"
+curl -sSL https://install.pi-hole.net | bash
 echo ""
 
 echo "# Configure Firewall"
-sudo ufw allow from 192.168.0.0/24 to any port 53 proto tcp # dns
-sudo ufw allow from 192.168.0.0/24 to any port 53 proto udp # dns
+sudo ufw allow from 192.168.0.0/24 to any port 53 # dns
 sudo ufw allow from 192.168.0.0/24 to any port 80 proto tcp # www
 # sudo ufw deny from ::/0 to any port 80 proto tcp # www deny IPV6 to stop ufw logs
 echo ""
