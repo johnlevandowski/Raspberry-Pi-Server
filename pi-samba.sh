@@ -23,6 +23,18 @@ sudo chmod 0777 /share
 echo ""
 
 echo "# Configure Samba"
+SAMBACONF="/etc/samba/smb.conf"
+echo '' | sudo tee -a $SAMBACONF > /dev/null
+echo '[share]' | sudo tee -a $SAMBACONF > /dev/null
+echo '	path = /share' | sudo tee -a $SAMBACONF > /dev/null
+echo '	read only = no' | sudo tee -a $SAMBACONF > /dev/null
+echo '	public = no' | sudo tee -a $SAMBACONF > /dev/null
+echo '	writeable = yes' | sudo tee -a $SAMBACONF > /dev/null
+echo '	create mask = 0777' | sudo tee -a $SAMBACONF > /dev/null
+echo '	force create mode = 0777' | sudo tee -a $SAMBACONF > /dev/null
+echo '	directory mask = 0777' | sudo tee -a $SAMBACONF > /dev/null
+echo '	force directory mode = 0777' | sudo tee -a $SAMBACONF > /dev/null
+
 echo "~~~"
 echo "sudo nano /etc/samba/smb.conf"
 echo "~~~"
@@ -34,18 +46,6 @@ echo "fruit:resource = xattr"
 echo "fruit:nfs_aces = no"
 echo "fruit:wipe_intentionally_left_blank_rfork = yes"
 echo "fruit:delete_empty_adfiles = yes"
-echo "~~~"
-echo "add to bottom of configuration"
-echo "~~~"
-echo "[share]"
-echo "	path = /share"
-echo "	read only = no"
-echo "	public = no"
-echo "	writeable = yes"
-echo "	create mask = 0777"
-echo "	force create mode = 0777"
-echo "	directory mask = 0777"
-echo "	force directory mode = 0777"
 echo "~~~"
 echo "sudo systemctl restart smbd"
 echo "~~~"
