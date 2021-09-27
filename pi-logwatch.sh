@@ -3,17 +3,18 @@
 echo "# Install logwatch"
 sudo apt install logwatch -y
 sudo mkdir /var/cache/logwatch
-sudo cp /usr/share/logwatch/default.conf/logwatch.conf /etc/logwatch/conf/
 echo ""
 
 echo "# Configure Logwatch"
+LOGWATCHCONF="/etc/logwatch/conf/logwatch.conf > /dev/null"
+echo 'Output = mail' | sudo tee $LOGWATCHCONF
+echo 'MailTo = user@example.com' | sudo tee -a $LOGWATCHCONF
+echo 'Detail = High' | sudo tee -a $LOGWATCHCONF
+echo 'Service = "-zz-disk_space"' | sudo tee -a $LOGWATCHCONF
 echo "~~~"
 echo "sudo nano /etc/logwatch/conf/logwatch.conf"
 echo "~~~"
-echo "Output = mail"
-echo "Format = html"
-echo "MailTo = user@example.com"
-echo "Detail = High"
+echo "Update email address"
 echo "~~~"
 echo ""
 
