@@ -14,20 +14,15 @@ sudo ufw deny from ::/0 # deny IPv6
 sudo ufw enable
 echo ""
 
+echo "# Disable polling for SD-card"
+BOOTCONF="/boot/config.txt"
+echo '' | sudo tee -a $BOOTCONF > /dev/null
+echo 'dtparam=sd_poll_once' | sudo tee -a $BOOTCONF > /dev/null
+tail -n 3 $BOOTCONF
+echo ""
+
 echo "# Raspberry Pi bootloader EEPROM"
 sudo rpi-eeprom-update
 echo ""
-echo "# Reboot before updating EEPROM using sudo rpi-eeprom-update -a and then reboot after updating"
-echo ""
-
-echo "# Disable polling for SD-card"
-echo "~~~"
-echo "sudo nano /boot/config.txt"
-echo "~~~"
-echo "# Disable polling for SD-card"
-echo "dtparam=sd_poll_once"
-echo "~~~"
-echo ""
-
-echo "# Install Scripts Complete, probably a good idea to reboot now"
+echo "# Reboot, then update EEPROM as needed using sudo rpi-eeprom-update -a and then reboot after updating"
 echo ""
