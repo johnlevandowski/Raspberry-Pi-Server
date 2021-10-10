@@ -18,9 +18,3 @@ echo "~~~"
 echo "Update email address"
 echo "~~~"
 echo ""
-
-# cron emails
-# sudo nano /etc/crontab
-# MAILTO=user@example.com
-# to test cron emails are working add:
-# * * * * * root date
