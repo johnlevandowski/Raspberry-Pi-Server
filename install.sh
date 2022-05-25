@@ -15,4 +15,4 @@ sudo locale-gen
 sudo update-locale LANG=en_US.UTF-8
 echo ""
 
-echo "# Logout and Login and run pi-install2.sh"
+echo "# Logout and Login and run install2.sh"

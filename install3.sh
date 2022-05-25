@@ -12,8 +12,7 @@ sudo ufw allow from 192.168.0.0/24 to 224.0.0.251 proto igmp # mDNS
 sudo ufw allow from 192.168.0.1 to 224.0.0.1 proto igmp # mDNS
 sudo ufw allow from 192.168.0.1 to 224.0.0.1 port 5350 proto udp # PCP
 sudo ufw allow from 192.168.0.1 to 224.0.0.1 port 5351 proto udp # PCP
-
-sudo ufw deny from ::/0 # deny IPv6
+# sudo ufw deny from ::/0 # deny IPv6
 sudo ufw enable
 echo ""
 
