@@ -21,11 +21,16 @@ tail -n 8 $POSTFIXCONF
 echo ""
 
 echo "# Forward root email"
+MAILALLIAS="/etc/aliases"
+echo '' | sudo tee -a $MAILALLIAS > /dev/null
+echo 'pi: john' | sudo tee -a $MAILALLIAS > /dev/null
+echo 'root: john' | sudo tee -a $MAILALLIAS > /dev/null
+echo 'john: john' | sudo tee -a $MAILALLIAS > /dev/null
+cat $MAILALLIAS
 echo "~~~"
 echo "sudo nano /etc/aliases"
 echo "~~~"
-echo "root: email address"
-echo "john: email address"
+echo "update john alias destination email address"
 echo "~~~"
 echo "sudo newaliases"
 echo "~~~"

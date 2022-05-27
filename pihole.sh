@@ -41,9 +41,9 @@ echo ""
 
 echo "# Configure Unbound"
 echo "~~~"
-echo "sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf"
-echo "~~~"
 echo "https://docs.pi-hole.net/guides/dns/unbound/"
+echo "~~~"
+echo "sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf"
 echo "~~~"
 echo "sudo service unbound restart"
 echo "~~~"
@@ -63,6 +63,3 @@ echo "Router > Advanced > Network > DHCP Server > Primary DNS = 191.168.0.200"
 echo "Manually configure clients to use manual DNS server"
 echo "~~~"
 echo ""
-
-stubby - dns over tls
-cloudflared - dns over https
