@@ -29,16 +29,16 @@ DATE=$(date +%Y%m%d)
 YEAR=$(echo $DATE | cut -c1-4)
 MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
-EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db"
+EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
 echo "# Sync Pictures to Box"
 echo ""
 rclone sync $EXCLUDE -v /share/Pictures box:/Pictures --dry-run
 echo ""
 
-echo "# Sync iTunes Music to Box excluding album artwork cache files"
+echo "# Sync iTunes Music to Box"
 echo ""
-rclone sync $EXCLUDE --exclude *.itc2 -v /share/iTunes box:/iTunes --dry-run
+rclone sync $EXCLUDE -v /share/iTunes box:/iTunes --dry-run
 echo ""
 
 echo "# Sync Documents to Dropbox"
