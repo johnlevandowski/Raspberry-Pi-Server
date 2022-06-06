@@ -16,9 +16,13 @@
 # chmod -R 777 /share/*
 
 # Don't run if script is currently running
-if pidof -o %PPID -x “share-backup.sh”; then
-exit 1
-fi
+script_name=$(basename -- "$0")
+for pid in $(pidof -x $script_name); do
+    if [ $pid != $$ ]; then
+        echo "[$(date)] : $script_name : Process is already running with PID $pid"
+        exit 1
+    fi
+done
 
 # Variables
 DATE=$(date +%Y%m%d)
