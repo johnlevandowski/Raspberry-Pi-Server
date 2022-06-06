@@ -15,6 +15,10 @@
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
 
+# Shows all files on source not on destination
+# Usefol for showing files on remote that may be removed
+# rclone check box:/iTunes /share/iTunes --one-way
+
 # Don't run if script is currently running
 script_name=$(basename -- "$0")
 for pid in $(pidof -x $script_name); do
@@ -31,19 +35,19 @@ MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
-echo "# Sync Pictures to Box"
+echo "# Copy Pictures to Box"
 echo ""
-rclone sync $EXCLUDE -v /share/Pictures box:/Pictures --dry-run
-echo ""
-
-echo "# Sync iTunes Music to Box"
-echo ""
-rclone sync $EXCLUDE -v /share/iTunes box:/iTunes --dry-run
+rclone copy $EXCLUDE -v /share/Pictures box:/Pictures --dry-run
 echo ""
 
-echo "# Sync Documents to Dropbox"
+echo "# Copy iTunes Music to Box"
 echo ""
-# rclone sync $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
+rclone copy $EXCLUDE -v /share/iTunes box:/iTunes --dry-run
+echo ""
+
+echo "# Copy Documents to Dropbox"
+echo ""
+# rclone copy $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
 echo ""
 
 echo "# Create backup of Documents and move to Box"
