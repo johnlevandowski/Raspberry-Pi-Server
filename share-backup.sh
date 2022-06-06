@@ -7,11 +7,18 @@
  
 # Configure to run via cron
 #
-# sudo nano /etc/crontab
-# 0 22 * * * john /home/john/share-backup.sh
+# mkdir ~/cron
+# cp ~/pi.johnlevandowski.com/share-backup.sh ~/cron/share-backup.sh
+# crontab -e
+# 0 22 * * * ~/cron/share-backup.sh
 
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
+
+# Don't run if script is currently running
+if pidof -o %PPID -x “share-backup.sh”; then
+exit 1
+fi
 
 # Variables
 DATE=$(date +%Y%m%d)
