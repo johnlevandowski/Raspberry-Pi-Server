@@ -36,34 +36,40 @@ DAY=$(echo $DATE | cut -c7-8)
 HOUR=$(date +%H)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
+if [ $HOUR = "22" ]; then
+
 echo "Copy Pictures to Box"
-echo "=========================================="
+echo "=================================================="
 rclone copy $EXCLUDE -v /share/Pictures box:/Pictures
 echo ""
 
 echo "Copy iTunes Music to Box"
-echo "=========================================="
+echo "=================================================="
 rclone copy $EXCLUDE -v /share/iTunes box:/iTunes
 echo ""
 
 echo "Copy Documents to Dropbox"
-echo "=========================================="
+echo "=================================================="
 # rclone copy $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
 echo ""
 
-if [ $HOUR = "22" ]; then
-    echo "Create Backup of Documents and Move to Box"
-    echo "=========================================="
-    # tar -zcpf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+echo "Create Backup of Documents and Move to Box"
+echo "=================================================="
+# tar -zcpf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
     if [ $DAY = "01" ]; then
         BACKUPDIR="/Backups/"
         else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
     fi
-    echo $BACKUPDIR
-    # rclone move -v /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
-    echo ""
-fi
+echo $BACKUPDIR
+# rclone move -v /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
+echo ""
 
 echo "Box Quota Information"
-echo "=========================================="
+echo "=================================================="
 rclone about box:
+
+else
+
+echo "hourly backup commands here"
+
+fi
