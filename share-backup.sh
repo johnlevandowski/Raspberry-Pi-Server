@@ -29,11 +29,11 @@ for pid in $(pidof -x $script_name); do
 done
 
 # Variables
-DATE=$(date +%Y%m%d)
+DATE=$(date +%Y%m%d%H)
 YEAR=$(echo $DATE | cut -c1-4)
 MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
-HOUR=$(date +%H)
+HOUR=$(echo $DATE | cut -c9-10)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
 if [ $HOUR = "22" ]; then
