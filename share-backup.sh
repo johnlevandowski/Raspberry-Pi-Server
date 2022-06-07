@@ -38,6 +38,8 @@ EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude
 
 if [ $HOUR = "22" ]; then
 
+# Once a Day Backup
+
 echo "Copy Pictures to Box"
 echo "=================================================="
 rclone copy $EXCLUDE -v /share/Pictures box:/Pictures
@@ -70,6 +72,8 @@ rclone about box:
 
 else
 
-echo "hourly backup commands here"
+# Once an Hour Backup
+
+# ADD HOURLY BACKUP COMMANDS HERE
 
 fi
