@@ -8,9 +8,9 @@
 # Configure to run via cron
 #
 # mkdir ~/cron
-# cp ~/pi.johnlevandowski.com/share-backup.sh ~/cron/share-backup.sh
+# cp ~/pi.johnlevandowski.com/share-backup.sh ~/cron/
 # crontab -e
-# 0 22 * * * ~/cron/share-backup.sh
+# 1 * * * * ~/cron/share-backup.sh
 
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
@@ -33,34 +33,37 @@ DATE=$(date +%Y%m%d)
 YEAR=$(echo $DATE | cut -c1-4)
 MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
+HOUR=$(date +%H)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
 echo "Copy Pictures to Box"
-echo "===================="
+echo "=========================================="
 rclone copy $EXCLUDE -v /share/Pictures box:/Pictures
 echo ""
 
 echo "Copy iTunes Music to Box"
-echo "========================"
+echo "=========================================="
 rclone copy $EXCLUDE -v /share/iTunes box:/iTunes
 echo ""
 
 echo "Copy Documents to Dropbox"
-echo "========================="
+echo "=========================================="
 # rclone copy $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
 echo ""
 
-echo "Create backup of Documents and move to Box"
-echo "=========================================="
-# tar -zcpf /share/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
-if [ $DAY = "01" ]; then
-     BACKUPDIR="/Backups/"
-else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
+if [ $HOUR = "22" ]; then
+    echo "Create Backup of Documents and Move to Box"
+    echo "=========================================="
+    # tar -zcpf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+    if [ $DAY = "01" ]; then
+        BACKUPDIR="/Backups/"
+        else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
+    fi
+    echo $BACKUPDIR
+    # rclone move -v /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
+    echo ""
 fi
-echo $BACKUPDIR
-# rclone move -v /share/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
-echo ""
 
 echo "Box Quota Information"
-echo "====================="
+echo "=========================================="
 rclone about box:

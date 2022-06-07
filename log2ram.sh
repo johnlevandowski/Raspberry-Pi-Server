@@ -10,7 +10,7 @@ echo ""
 echo "# Mount /tmp on tmpfs"
 FSTAB="/etc/fstab"
 echo '' | sudo tee -a $FSTAB > /dev/null
-echo 'tmpfs  /tmp  tmpfs  defaults,noatime,nosuid,nodev  0  0' | sudo tee -a $FSTAB > /dev/null
+echo 'tmpfs /tmp tmpfs defaults,noatime,nosuid,nodev,noexec 0 0' | sudo tee -a $FSTAB > /dev/null
 tail -n 6 $FSTAB
 echo ""
 
