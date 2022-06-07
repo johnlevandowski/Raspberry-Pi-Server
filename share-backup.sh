@@ -15,8 +15,8 @@
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
 
-# Shows all files on source not on destination
-# Usefol for showing files on remote that may be removed
+# Show all files on source not on destination
+# Useful for showing files on remote that may be manually removed
 # rclone check box:/iTunes /share/iTunes --one-way
 
 # Don't run if script is currently running
@@ -35,23 +35,23 @@ MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
-echo "# Copy Pictures to Box"
-echo ""
-rclone copy $EXCLUDE -v /share/Pictures box:/Pictures --dry-run
-echo ""
-
-echo "# Copy iTunes Music to Box"
-echo ""
-rclone copy $EXCLUDE -v /share/iTunes box:/iTunes --dry-run
+echo "Copy Pictures to Box"
+echo "===================="
+rclone copy $EXCLUDE -v /share/Pictures box:/Pictures
 echo ""
 
-echo "# Copy Documents to Dropbox"
+echo "Copy iTunes Music to Box"
+echo "========================"
+rclone copy $EXCLUDE -v /share/iTunes box:/iTunes
 echo ""
+
+echo "Copy Documents to Dropbox"
+echo "========================="
 # rclone copy $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
 echo ""
 
-echo "# Create backup of Documents and move to Box"
-echo ""
+echo "Create backup of Documents and move to Box"
+echo "=========================================="
 # tar -zcpf /share/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
 if [ $DAY = "01" ]; then
      BACKUPDIR="/Backups/"
@@ -61,6 +61,6 @@ echo $BACKUPDIR
 # rclone move -v /share/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
 echo ""
 
-echo "# Box Quota Information"
-echo ""
+echo "Box Quota Information"
+echo "====================="
 rclone about box:
