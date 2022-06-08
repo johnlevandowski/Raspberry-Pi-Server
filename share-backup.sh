@@ -38,21 +38,21 @@ EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude
 
 if [ $HOUR = "22" ]; then
 
-# Once a Day Backup with Verbose Output
+# Once a Day Backup
 
 echo "Copy Pictures to Box"
 echo "=================================================="
-rclone copy $EXCLUDE -v /share/Pictures box:/Pictures
+rclone copy $EXCLUDE /share/Pictures box:/Pictures
 echo ""
 
 echo "Copy iTunes Music to Box"
 echo "=================================================="
-rclone copy $EXCLUDE -v /share/iTunes box:/iTunes
+rclone copy $EXCLUDE /share/iTunes box:/iTunes
 echo ""
 
 echo "Copy Documents to Dropbox"
 echo "=================================================="
-# rclone copy $EXCLUDE -v /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
+# rclone copy $EXCLUDE /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
@@ -63,7 +63,7 @@ echo "=================================================="
         else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
     fi
 echo $BACKUPDIR
-# rclone move -v /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
+# rclone move /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
 echo ""
 
 echo "Box Quota Information"
@@ -72,8 +72,9 @@ rclone about box:
 
 else
 
-# Once an Hour Backup with Silent Output
+# Once an Hour Backup
 
-rclone copy $EXCLUDE -q /share/Pictures box:/Pictures
+rclone copy $EXCLUDE /share/Pictures box:/Pictures
+rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
 fi
