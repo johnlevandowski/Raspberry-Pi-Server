@@ -36,24 +36,20 @@ DAY=$(echo $DATE | cut -c7-8)
 HOUR=$(echo $DATE | cut -c9-10)
 EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2"
 
+# Once an Hour Backup
+
+# Copy Pictures to Box
+rclone copy $EXCLUDE /share/Pictures box:/Pictures
+
+# Copy iTunes Music to Box
+rclone copy $EXCLUDE /share/iTunes box:/iTunes
+
+# Copy Documents to Dropbox
+# rclone copy $EXCLUDE /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
+
 if [ $HOUR = "22" ]; then
 
 # Once a Day Backup
-
-echo "Copy Pictures to Box"
-echo "=================================================="
-rclone copy $EXCLUDE /share/Pictures box:/Pictures
-echo ""
-
-echo "Copy iTunes Music to Box"
-echo "=================================================="
-rclone copy $EXCLUDE /share/iTunes box:/iTunes
-echo ""
-
-echo "Copy Documents to Dropbox"
-echo "=================================================="
-# rclone copy $EXCLUDE /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
-echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
@@ -69,12 +65,5 @@ echo ""
 echo "Box Quota Information"
 echo "=================================================="
 rclone about box:
-
-else
-
-# Once an Hour Backup
-
-rclone copy $EXCLUDE /share/Pictures box:/Pictures
-rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
 fi
