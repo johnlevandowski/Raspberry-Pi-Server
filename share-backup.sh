@@ -15,10 +15,6 @@
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
 
-# Show all files on source not on destination
-# Useful for showing files on remote that may be manually removed
-# rclone check box:/iTunes /share/iTunes --one-way
-
 # Don't run if script is currently running
 script_name=$(basename -- "$0")
 for pid in $(pidof -x $script_name); do
@@ -50,6 +46,13 @@ rclone copy $EXCLUDE /share/iTunes box:/iTunes
 if [ $HOUR = "22" ]; then
 
 # Once a Day Backup
+
+echo "Files on remote not on local"
+echo "=================================================="
+# Useful for showing files on remote that may be manually removed
+rclone check -q --one-way box:/Pictures /share/Pictures
+rclone check -q --one-way box:/iTunes /share/iTunes
+echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="

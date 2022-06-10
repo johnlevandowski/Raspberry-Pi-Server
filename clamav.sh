@@ -19,9 +19,9 @@ ExcludePath ^/var/spool/postfix/dev
 ExcludePath ^/var/spool/postfix/private
 ExcludePath ^/var/spool/postfix/public
 
-Takes 18 minutes excluding /share directory
-
 sudo clamdscan --fdpass --move=/root/quarantine /
 
 # add cron entry to cron.d
-echo "0 3 * * 0 root clamdscan --fdpass --move=/root/quarantine /" | sudo tee /etc/cron.d/clamdscan
+# freshclam updates at 3am daily
+# about 21 GB is 76 minutes total run time
+echo "0 5 * * 0 root clamdscan --fdpass --move=/root/quarantine /" | sudo tee /etc/cron.d/clamdscan
