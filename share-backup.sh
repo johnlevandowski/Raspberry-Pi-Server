@@ -42,6 +42,7 @@ rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
 # Copy Documents to Dropbox
 rclone copy $EXCLUDE /share/Documents/backup dropbox:/Documents/backup
+rclone copy $EXCLUDE /share/Documents/Windows dropbox:/Documents/WIndows
 
 if [ $HOUR = "22" ]; then
 
@@ -53,6 +54,7 @@ echo "=================================================="
 rclone check -q --one-way box:/Pictures /share/Pictures
 rclone check -q --one-way box:/iTunes /share/iTunes
 rclone check -q --one-way dropbox:/Documents/backup /share/Documents/backup
+rclone check -q --one-way dropbox:/Documents/Windows /share/Documents/Windows
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
