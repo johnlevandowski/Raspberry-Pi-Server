@@ -23,5 +23,5 @@ sudo clamdscan --fdpass --move=/root/quarantine /
 
 # add cron entry to cron.d
 # freshclam updates at 3am daily
-# about 21 GB is 76 minutes total run time
+# about 21 GB is 91 minutes total run time
 echo "0 5 * * 0 root clamdscan --fdpass --move=/root/quarantine /" | sudo tee /etc/cron.d/clamdscan

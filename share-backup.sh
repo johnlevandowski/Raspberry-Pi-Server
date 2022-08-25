@@ -41,7 +41,7 @@ rclone copy $EXCLUDE /share/Pictures box:/Pictures
 rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
 # Copy Documents to Dropbox
-# rclone copy $EXCLUDE /share/Documents/Taxes dropbox:/Documents/Taxes --dry-run
+rclone copy $EXCLUDE /share/Documents/backup dropbox:/Documents/backup
 
 if [ $HOUR = "22" ]; then
 
@@ -52,11 +52,12 @@ echo "=================================================="
 # Useful for showing files on remote that may be manually removed
 rclone check -q --one-way box:/Pictures /share/Pictures
 rclone check -q --one-way box:/iTunes /share/iTunes
+rclone check -q --one-way dropbox:/Documents/backup /share/Documents/backup
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
-# tar -zcpf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+# tar -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
     if [ $DAY = "01" ]; then
         BACKUPDIR="/Backups/"
         else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
