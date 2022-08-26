@@ -41,8 +41,8 @@ rclone copy $EXCLUDE /share/Pictures box:/Pictures
 rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
 # Copy Documents to Dropbox
-rclone copy $EXCLUDE /share/Documents/backup dropbox:/Documents/backup
-rclone copy $EXCLUDE /share/Documents/Windows dropbox:/Documents/WIndows
+rclone copy --checksum $EXCLUDE /share/Documents/backup dropbox:/Documents/backup
+rclone copy --checksum $EXCLUDE /share/Documents/Windows dropbox:/Documents/WIndows
 
 if [ $HOUR = "22" ]; then
 
