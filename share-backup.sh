@@ -8,12 +8,15 @@
 # Configure to run via cron
 #
 # mkdir ~/cron
-# cp ~/pi.johnlevandowski.com/share-backup.sh ~/cron/
+# cp /share/Documents/Linux/Raspberry-Pi-Server/share-backup.sh ~/cron/
+
 # crontab -e
 # 1 * * * * ~/cron/share-backup.sh
 
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
+# Find and delete all .DS_Store files
+# find /share/ -name ".DS_Store" -type f -print -delete
 
 # Don't run if script is currently running
 script_name=$(basename -- "$0")
@@ -40,9 +43,8 @@ rclone copy $EXCLUDE /share/Pictures box:/Pictures
 # Copy iTunes Music to Box
 rclone copy $EXCLUDE /share/iTunes box:/iTunes
 
-# Copy Documents to Dropbox
-rclone copy --checksum $EXCLUDE /share/Documents/backup dropbox:/Documents/backup
-rclone copy --checksum $EXCLUDE /share/Documents/Windows dropbox:/Documents/WIndows
+# Copy Documents to Dropbox exluding gnucash log files
+rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:/Documents
 
 if [ $HOUR = "22" ]; then
 
@@ -53,19 +55,19 @@ echo "=================================================="
 # Useful for showing files on remote that may be manually removed
 rclone check -q --one-way box:/Pictures /share/Pictures
 rclone check -q --one-way box:/iTunes /share/iTunes
-rclone check -q --one-way dropbox:/Documents/backup /share/Documents/backup
-rclone check -q --one-way dropbox:/Documents/Windows /share/Documents/Windows
+rclone check -q --one-way dropbox:/Documents /share/Documents
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
-# tar -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+tar --exclude-vcs -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+ls -lh /tmp/backup*.tar.gz
     if [ $DAY = "01" ]; then
         BACKUPDIR="/Backups/"
         else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
     fi
 echo $BACKUPDIR
-# rclone move /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR --dry-run
+rclone move /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR
 echo ""
 
 echo "Box Quota Information"
