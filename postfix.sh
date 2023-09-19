@@ -30,7 +30,7 @@ cat $MAILALIAS
 echo "~~~"
 echo "sudo nano /etc/aliases"
 echo "~~~"
-echo "update john alias destination email address"
+echo "update john alias destination to gmail email address so forwarded gmail is auto deleted from sent folder"
 echo "~~~"
 echo "sudo newaliases"
 echo "~~~"

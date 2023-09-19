@@ -8,11 +8,6 @@ echo "# Install Rclone for cloud backup"
 curl https://rclone.org/install.sh | sudo bash
 echo ""
 
-echo "# Configure Firewall"
-sudo ufw allow from 192.168.0.0/24 to any port 139 proto tcp # samba
-sudo ufw allow from 192.168.0.0/24 to any port 445 proto tcp # samba
-echo ""
-
 echo "# Add Samba User"
 sudo smbpasswd -a john
 echo ""

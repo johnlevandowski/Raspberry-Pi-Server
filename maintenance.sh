@@ -19,3 +19,7 @@ sudo rpi-eeprom-update
 echo ""
 echo "# Reboot before updating EEPROM using sudo rpi-eeprom-update -a and then reboot after updating"
 echo ""
+
+echo "# temperature hopefully below 40C, if not check fan is working"
+sudo vcgencmd measure_temp
+echo ""
