@@ -1,0 +1,98 @@
+{
+	acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
+}
+
+{$LANDOMAIN} {
+	file_server
+	# reverse_proxy http://portainer:9000
+}
+
+*.{$LANDOMAIN} {
+	@immich host immich.{$LANDOMAIN}
+	handle @immich {
+		reverse_proxy http://immich_server:2283
+	}
+
+	@nextcloud host nextcloud.{$LANDOMAIN}
+	handle @nextcloud {
+		reverse_proxy http://nextcloud-aio-apache:11000
+	}
+
+	@openspeedtest host openspeedtest.{$LANDOMAIN}
+	handle @openspeedtest {
+		reverse_proxy http://openspeedtest:3000 {
+			request_buffers 35MiB
+			response_buffers 35MiB
+			flush_interval -1
+		}
+	}
+
+	@pihole host pihole.{$LANDOMAIN}
+	handle @pihole {
+		redir / /admin{uri}
+		reverse_proxy http://172.17.0.1:8080
+	}
+
+	@test host test.{$LANDOMAIN}
+	handle @test {
+		respond "This is a test, proving that Caddy is running :)"
+	}
+
+	@uptime-kuma host uptime-kuma.{$LANDOMAIN}
+	handle @uptime-kuma {
+		reverse_proxy http://uptime-kuma:3001
+	}
+
+	handle {
+		respond "The subdomain you attempted to navigate to is not configured."
+	}
+}
+
+{$TSDOMAIN} {
+	file_server
+	# reverse_proxy http://portainer:9000
+}
+
+*.{$TSDOMAIN} {
+	@immich host immich.{$TSDOMAIN}
+	handle @immich {
+		reverse_proxy http://immich_server:2283
+	}
+
+	@nextcloud host nextcloud.{$TSDOMAIN}
+	handle @nextcloud {
+		reverse_proxy http://nextcloud-aio-apache:11000
+	}
+
+	@openspeedtest host openspeedtest.{$TSDOMAIN}
+	handle @openspeedtest {
+		reverse_proxy http://openspeedtest:3000 {
+			request_buffers 35MiB
+			response_buffers 35MiB
+			flush_interval -1
+		}
+	}
+
+	@pihole host pihole.{$TSDOMAIN}
+	handle @pihole {
+		redir / /admin{uri}
+		reverse_proxy http://172.17.0.1:8080
+	}
+
+	@test host test.{$TSDOMAIN}
+	handle @test {
+		respond "This is a test, proving that Caddy is running :)"
+	}
+
+	@uptime-kuma host uptime-kuma.{$TSDOMAIN}
+	handle @uptime-kuma {
+		reverse_proxy http://uptime-kuma:3001
+	}
+
+	handle {
+		respond "The subdomain you attempted to navigate to is not configured."
+	}
+}
+
+# Refer to the Caddy docs for more information:
+# https://caddyserver.com/docs/caddyfile

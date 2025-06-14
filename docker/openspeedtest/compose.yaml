@@ -1,0 +1,12 @@
+services:
+  openspeedtest:
+    image: openspeedtest/latest:v2.0.6
+    container_name: openspeedtest
+    hostname: openspeedtest
+    restart: unless-stopped
+    networks:
+       caddy_network:
+
+networks:
+  caddy_network:
+    external: true

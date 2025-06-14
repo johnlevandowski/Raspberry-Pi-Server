@@ -1,0 +1,36 @@
+# adapted from https://hub.docker.com/_/caddy
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN} #from .env file
+      - ACME_AGREE=true
+      - LANDOMAIN=${LANDOMAIN}
+      - TSDOMAIN=${TSDOMAIN}
+    volumes:
+      - $PWD/site:/srv
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      caddy_network:
+        ipv4_address: '172.21.21.2'
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  caddy_network:
+    external: true
