@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Raspberry PI specific install
+
 echo "# Lock pi user account"
 sudo passwd -l pi
 echo ""

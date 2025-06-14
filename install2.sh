@@ -13,6 +13,20 @@ sudo apt update
 sudo apt full-upgrade -y
 echo ""
 
+sudo nmcli c show
+
+sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.201/24 ipv4.method manual
+sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
+sudo nmcli c mod "Wired connection 1" ipv4.dns 192.168.0.1
+
+sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
+
+# ssh will drop connection with ip address change
+
+
+
+Outdated network setup below
+
 sudo tee -a /etc/systemd/network/10-lan.link > /dev/null <<EOF
 [Match]
 MACAddress=12:34:56:78:90:23
@@ -20,6 +34,7 @@ MACAddress=12:34:56:78:90:23
 [Link]
 Name=lan
 EOF
+
 
 echo "# CHANGE TO HAVE STATIC IP ADDRESS CONFIGURED IN OPENWRT ROUTER VIA DHCP"
 echo "# Configure Static IP Address"
@@ -40,7 +55,7 @@ sudo sed -i 's/127.0.1.1/'$FIXEDIP'/' /etc/hosts
 cat /etc/hosts
 echo ""
 
-# should already be don from resapberry pi imager install setting
+# should already be done from resapberry pi imager install setting
 # echo "# Add User"
 # sudo adduser john
 # sudo adduser john sudo

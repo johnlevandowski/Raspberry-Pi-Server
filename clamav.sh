@@ -19,9 +19,9 @@ ExcludePath ^/var/spool/postfix/dev
 ExcludePath ^/var/spool/postfix/private
 ExcludePath ^/var/spool/postfix/public
 
-sudo clamdscan --fdpass --move=/root/quarantine /
+sudo clamdscan --fdpass --move=/root/quarantine /share/
 
 # add cron entry to cron.d
 # freshclam updates at 3am daily
 # about 21 GB is 91 minutes total run time
-echo "0 5 * * 0 root clamdscan --fdpass --move=/root/quarantine /" | sudo tee /etc/cron.d/clamdscan
+echo "0 5 * * 0 root clamdscan --fdpass --move=/root/quarantine /share/" | sudo tee /etc/cron.d/clamdscan

@@ -15,6 +15,7 @@ sudo ufw allow from 192.168.0.1 to 224.0.0.1 port 5351 proto udp # PCP
 echo "# PiHole dns, www, dhcp"
 sudo ufw allow in on lan from 192.168.0.0/16 to any port 53
 sudo ufw allow in on lan from 192.168.0.0/16 to any port 80 proto tcp
+sudo ufw allow in on lan from 192.168.0.0/16 to any port 443 proto tcp
 sudo ufw allow in on lan from any port 68 to any port 67 proto udp
 echo ""
 
@@ -23,7 +24,7 @@ sudo ufw allow in on lan from 192.168.0.0/16 to any port 139 proto tcp
 sudo ufw allow in on lan from 192.168.0.0/16 to any port 445 proto tcp
 echo ""
 
-ufw allow from 192.168.0.0/24 to any port 5201 # iperf3
+sudo ufw allow in on lan from 192.168.0.0/16 to any port 5201 # iperf3
 
 sudo ufw enable
 echo ""
