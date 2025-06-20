@@ -1,0 +1,32 @@
+{
+	acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
+}
+
+{$SUBDOMAIN} {
+	file_server
+}
+
+*.{$SUBDOMAIN} {
+	@test host test.{$SUBDOMAIN}
+	handle @test {
+		respond "This is a test, proving that Caddy is running :)"
+	}
+
+	@pihole host pihole.{$SUBDOMAIN}
+	handle @pihole {
+		redir / /admin{uri}
+		reverse_proxy http://172.17.0.1.:8081
+	}
+
+	@nextcloud host nextcloud.{$SUBDOMAIN}
+	handle @nextcloud {
+		reverse_proxy http://nextcloud-aio-apache:11000
+	}
+
+	handle {
+		respond "The subdomain you attempted to navigate to is not configured."
+	}
+}
+
+# Refer to the Caddy docs for more information:
+# https://caddyserver.com/docs/caddyfile

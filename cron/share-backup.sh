@@ -1,22 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
 # Configure rclone remotes
+# sudo curl -fsSL https://rclone.org/install.sh -o rclone-install.sh
+# sudo bash rclone-install.sh
 #
 # rclone config
 # Use auto config? = no
- 
-# Configure to run via cron
-#
-# mkdir ~/cron
-# cp /share/Documents/Linux/Raspberry-Pi-Server/share-backup.sh ~/cron/
+
+# cp -r ~/install/cron/ ~/cron/
+# cp ~/cron/sample.env ~/cron/.env
+# nano ~/cron/.env
 
 # crontab -e
-# 1 * * * * ~/cron/share-backup.sh
+# 1 * * * * /bin/bash -c "~/install/cron/share-backup.sh"
 
 # Change all share file/folder permissions
 # chmod -R 777 /share/*
 # Find and delete all .DS_Store files
 # find /share/ -name ".DS_Store" -type f -print -delete
+
+source ~/cron/.env
 
 # Don't run if script is currently running
 script_name=$(basename -- "$0")
@@ -60,6 +63,8 @@ echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
+# 7zz a -mhe -xr\!.git -ppassword /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
+# rclone move --checksum /tmp/securedocuments.7z dropbox:/SecureDocuments  --dry-run
 tar --exclude-vcs -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
 ls -lh /tmp/backup*.tar.gz
     if [ $DAY = "01" ]; then
@@ -68,6 +73,18 @@ ls -lh /tmp/backup*.tar.gz
     fi
 echo $BACKUPDIR
 rclone move /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR
+echo ""
+
+echo "Create Backup of Secure Documents and Move to Box"
+echo "=================================================="
+7zz a -mhe -xr\!.git -p$password /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z /share/SecureDocuments/* -r > /dev/null
+ls -lh /tmp/securedocuments*.7z
+    if [ $DAY = "01" ]; then
+        BACKUPDIR="/SecureBackups/"
+        else BACKUPDIR="/SecureBackups/"$YEAR"/"$MONTH
+    fi
+echo $BACKUPDIR
+rclone move /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z box:$BACKUPDIR
 echo ""
 
 echo "Box Quota Information"

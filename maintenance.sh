@@ -11,7 +11,6 @@ sudo pihole -g
 echo ""
 
 echo "# Update Rclone"
-# curl https://rclone.org/install.sh | sudo bash
 sudo rclone selfupdate
 echo ""
 
