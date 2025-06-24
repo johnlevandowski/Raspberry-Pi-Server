@@ -49,6 +49,10 @@ rclone copy $EXCLUDE /share/iTunes box:/iTunes
 # Copy Documents to Dropbox exluding gnucash log files
 rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:/Documents
 
+# Create Backup of Secure Documents and move to Dropbox
+7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
+rclone move --checksum /tmp/securedocuments.7z dropbox:/SecureDocuments
+
 if [ $HOUR = "22" ]; then
 
 # Once a Day Backup
@@ -63,7 +67,7 @@ echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
-# 7zz a -mhe -xr\!.git -ppassword /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
+# 7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
 # rclone move --checksum /tmp/securedocuments.7z dropbox:/SecureDocuments  --dry-run
 tar --exclude-vcs -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
 ls -lh /tmp/backup*.tar.gz

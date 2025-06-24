@@ -16,7 +16,8 @@ services:
     environment:
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN} #from .env file
       - ACME_AGREE=true
-      - SUBDOMAIN=rpi5.lan.johnl.dev
+      - LANDOMAIN=rpi5.lan.johnl.dev
+      - TSDOMAIN=rpi5.ts.johnl.dev
     volumes:
       - $PWD/site:/srv
       - ./Caddyfile:/etc/caddy/Caddyfile

@@ -61,7 +61,7 @@ sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~
 sudo apt update
 sudo apt full-upgrade -y
-sudo apt install dnsutils -y
+sudo apt install dnsutils smartmontools -y
 ~~~
 
 6. Raspberry PI boot options
@@ -76,8 +76,7 @@ tail -n 4 $BOOTCONF
 
 7. Change journald to auto - rasperry pi OS now has systemd journald set to volatile by default
 ~~~
-sudo nano /etc/systemd/journald.conf
-Storage=auto
+sudo sed -i 's/Storage=volatile/Storage=auto/' /etc/systemd/journald.conf
 ~~~
 
 8. Reduce journald Journal Size

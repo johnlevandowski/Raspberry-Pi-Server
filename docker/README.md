@@ -37,15 +37,21 @@ docker system df
 docker system prune
 ~~~
 
-#Copy docker directories to root of home directory for use
+# Copy docker directories to root of home directory for use
 ~~~
 cp -r ~/install/docker/ ~/docker/
 cp ~/docker/caddy/sample.env ~/docker/caddy/.env
 cp ~/docker/pihole/sample.env ~/docker/pihole/.env
 ~~~
 
-#Update docker .env files with passwords/keys
+# Update docker .env files with passwords/keys
 ~~~
 nano ~/docker/caddy/.env
 nano ~/docker/pihole/.env
+~~~
+
+# Enable memory reporting in docker stats for raspberry pi by adding the follwing config to end of line 1
+~~~
+nano /boot/firmware/cmdline.txt
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ~~~

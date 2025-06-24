@@ -39,6 +39,8 @@ services:
     image: mvance/unbound-rpi:latest # for amd/intel use mvance/unbound:latest
     volumes:
       - "./etc-unbound:/opt/unbound/etc/unbound"
+    cap_add:
+       - NET_ADMIN
     restart: unless-stopped
     networks:
       unbound_network:
@@ -49,4 +51,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.21.53.0/24"
+        - subnet: 172.21.53.0/24

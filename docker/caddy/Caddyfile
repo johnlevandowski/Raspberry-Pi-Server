@@ -2,23 +2,51 @@
 	acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
 }
 
-{$SUBDOMAIN} {
-	file_server
+{$LANDOMAIN} {
+	# file_server
+	reverse_proxy http://portainer:9000
 }
 
-*.{$SUBDOMAIN} {
-	@test host test.{$SUBDOMAIN}
+*.{$LANDOMAIN} {
+	@test host test.{$LANDOMAIN}
 	handle @test {
 		respond "This is a test, proving that Caddy is running :)"
 	}
 
-	@pihole host pihole.{$SUBDOMAIN}
+	@pihole host pihole.{$LANDOMAIN}
 	handle @pihole {
 		redir / /admin{uri}
-		reverse_proxy http://172.17.0.1.:8081
+		reverse_proxy http://172.17.0.1:8081
 	}
 
-	@nextcloud host nextcloud.{$SUBDOMAIN}
+	@nextcloud host nextcloud.{$LANDOMAIN}
+	handle @nextcloud {
+		reverse_proxy http://nextcloud-aio-apache:11000
+	}
+
+	handle {
+		respond "The subdomain you attempted to navigate to is not configured."
+	}
+}
+
+{$TSDOMAIN} {
+	# file_server
+	reverse_proxy http://portainer:9000
+}
+
+*.{$TSDOMAIN} {
+	@test host test.{$TSDOMAIN}
+	handle @test {
+		respond "This is a test, proving that Caddy is running :)"
+	}
+
+	@pihole host pihole.{$TSDOMAIN}
+	handle @pihole {
+		redir / /admin{uri}
+		reverse_proxy http://172.17.0.1:8081
+	}
+
+	@nextcloud host nextcloud.{$TSDOMAIN}
 	handle @nextcloud {
 		reverse_proxy http://nextcloud-aio-apache:11000
 	}
