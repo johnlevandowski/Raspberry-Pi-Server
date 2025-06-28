@@ -7,24 +7,23 @@ services:
     environment:
       ACCOUNT_john: ${john_password} #from .env file
       UID_username: 1000
-      SAMBA_VOLUME_CONFIG_share: "[File Share]; path=/share; available = yes; browseable = yes; writable = yes; read only = no; force user = john; public = no; guest ok = no"
+      SAMBA_VOLUME_CONFIG_share: "[share]; path=/share; available = yes; browseable = yes; writable = yes; read only = no; force user = john; public = no; guest ok = no"
     volumes:
       - /share:/share
       - /etc/avahi/services/:/external/avahi
     ports:
       - 445:445
-      # - 139:139
-      # - "137:137/udp"
+      - 139:139
+      - 137:137/udp
     networks:
       samba_network:
+        ipv4_address: '172.21.137.137'
     cap_add:
       - CAP_NET_ADMIN
 
 networks:
   samba_network:
-    name: samba_network
     ipam:
+      driver: default
       config:
-        - subnet: 172.22.22.0/24
-          ip_range: 172.22.22.0/24
-          gateway: 172.22.22.1
+        - subnet: 172.21.137.0/24

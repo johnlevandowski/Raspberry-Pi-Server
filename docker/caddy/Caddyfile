@@ -16,7 +16,7 @@
 	@pihole host pihole.{$LANDOMAIN}
 	handle @pihole {
 		redir / /admin{uri}
-		reverse_proxy http://172.17.0.1:8081
+		reverse_proxy http://172.17.0.1:8080
 	}
 
 	@nextcloud host nextcloud.{$LANDOMAIN}
@@ -43,7 +43,7 @@
 	@pihole host pihole.{$TSDOMAIN}
 	handle @pihole {
 		redir / /admin{uri}
-		reverse_proxy http://172.17.0.1:8081
+		reverse_proxy http://172.17.0.1:8080
 	}
 
 	@nextcloud host nextcloud.{$TSDOMAIN}

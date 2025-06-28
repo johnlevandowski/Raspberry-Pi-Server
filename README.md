@@ -83,6 +83,7 @@ sudo sed -i 's/Storage=volatile/Storage=auto/' /etc/systemd/journald.conf
 ~~~
 JOURNALCONF="/etc/systemd/journald.conf.d/rpi.conf"
 sudo install -Dv /dev/null $JOURNALCONF
+echo '[Journal]' | sudo tee -a $JOURNALCONF > /dev/null
 echo 'SystemMaxUse=1000M' | sudo tee -a $JOURNALCONF > /dev/null
 sudo systemctl restart systemd-journald
 ~~~

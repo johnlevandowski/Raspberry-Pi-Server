@@ -10,9 +10,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
     environment:
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN} #from .env file
       - ACME_AGREE=true
@@ -25,6 +25,7 @@ services:
       - caddy_config:/config
     networks:
       caddy_network:
+        ipv4_address: '172.21.21.2'
 
 volumes:
   caddy_data:

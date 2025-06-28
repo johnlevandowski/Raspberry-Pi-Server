@@ -15,11 +15,12 @@ sudo nano /etc/docker/daemon.json
 }
 ~~~
 
+# Create network with limited range so caddy server can have fixed IP for firewall rules
 ~~~
 docker network create \
 --driver=bridge \
 --subnet=172.21.21.0/24 \
---ip-range=172.21.21.0/24 \
+--ip-range=172.21.21.128/25 \
 --gateway=172.21.21.1 \
 caddy_network
 ~~~
@@ -53,5 +54,11 @@ nano ~/docker/pihole/.env
 # Enable memory reporting in docker stats for raspberry pi by adding the follwing config to end of line 1
 ~~~
 nano /boot/firmware/cmdline.txt
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+cgroup_enable=cpuset cgroup_enable=memory
+~~~
+
+# Compare local docker directory vs github version
+~~~
+git -C ~/install/ pull
+diff -r --exclude=*.env ~/docker/ ~/install/docker/
 ~~~
