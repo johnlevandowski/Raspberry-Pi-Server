@@ -33,11 +33,14 @@ sudo systemctl restart smbd
 ~~~
 
 ## old samba Config below
+~~~
 echo '	create mask = 0777' | sudo tee -a $SAMBACONF > /dev/null
 echo '	force create mode = 0777' | sudo tee -a $SAMBACONF > /dev/null
 echo '	directory mask = 0777' | sudo tee -a $SAMBACONF > /dev/null
 echo '	force directory mode = 0777' | sudo tee -a $SAMBACONF > /dev/null
+~~~
 
+~~~
 echo "~~~"
 echo "sudo nano /etc/samba/smb.conf"
 echo "~~~"
@@ -50,3 +53,4 @@ echo "fruit:nfs_aces = no"
 echo "fruit:wipe_intentionally_left_blank_rfork = yes"
 echo "fruit:delete_empty_adfiles = yes"
 echo "~~~"
+~~~

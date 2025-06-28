@@ -32,7 +32,7 @@ sudo ufw allow from 172.21.21.2 to 172.17.0.1 port 8080 proto tcp comment "Caddy
 
 ## Samba
 ~~~
-sudo ufw allow 139/tcp comment "samba"
+# sudo ufw allow 139/tcp comment "samba netbios"
 sudo ufw allow 445/tcp comment "samba"
 ~~~
 
@@ -41,12 +41,12 @@ sudo ufw allow 445/tcp comment "samba"
 sudo ufw allow 5201 comment "iperf3"
 ~~~
 
-## Change logging from low to none after testing
+## Change logging from low to off after testing
 ~~~
-sudo ufw logging none
+sudo ufw logging off
 ~~~
 
-## Other rules not needed after changing logging to none
+## Other rules not needed after changing logging to off
 
 ### Disable mDNS so it isn't in logs
 ~~~

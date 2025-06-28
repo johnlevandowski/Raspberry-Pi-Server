@@ -1,23 +1,18 @@
 #!/bin/bash
 
 # Configure rclone remotes
-# sudo curl -fsSL https://rclone.org/install.sh -o rclone-install.sh
+# curl -fsSL https://rclone.org/install.sh -o rclone-install.sh
 # sudo bash rclone-install.sh
 #
 # rclone config
-# Use auto config? = no
+# Use web browser to automatically authenticate rclone with remote? = no
 
 # cp -r ~/install/cron/ ~/cron/
 # cp ~/cron/sample.env ~/cron/.env
 # nano ~/cron/.env
 
 # crontab -e
-# 1 * * * * /bin/bash -c "~/install/cron/share-backup.sh"
-
-# Change all share file/folder permissions
-# chmod -R 777 /share/*
-# Find and delete all .DS_Store files
-# find /share/ -name ".DS_Store" -type f -print -delete
+# 1 * * * * /bin/bash -c "~/cron/share-backup.sh"
 
 source ~/cron/.env
 
