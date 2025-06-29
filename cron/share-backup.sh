@@ -36,17 +36,17 @@ EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude
 # Once an Hour Backup
 
 # Copy Pictures to Box
-rclone copy $EXCLUDE /share/Pictures box:/Pictures
+rclone copy $EXCLUDE /share/Pictures box:Pictures
 
 # Copy iTunes Music to Box
-rclone copy $EXCLUDE /share/iTunes box:/iTunes
+rclone copy $EXCLUDE /share/iTunes box:iTunes
 
 # Copy Documents to Dropbox exluding gnucash log files
-rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:/Documents
+rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:Documents
 
 # Create Backup of Secure Documents and move to Dropbox
 7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
-rclone move --checksum /tmp/securedocuments.7z dropbox:/SecureDocuments
+rclone move --checksum /tmp/securedocuments.7z dropbox:SecureDocuments
 
 if [ $HOUR = "22" ]; then
 
@@ -55,20 +55,20 @@ if [ $HOUR = "22" ]; then
 echo "Files on remote not on local"
 echo "=================================================="
 # Useful for showing files on remote that may be manually removed
-rclone check -q --one-way box:/Pictures /share/Pictures
-rclone check -q --one-way box:/iTunes /share/iTunes
-rclone check -q --one-way dropbox:/Documents /share/Documents
+rclone check -q --one-way box:Pictures /share/Pictures
+rclone check -q --one-way box:iTunes /share/iTunes
+rclone check -q --one-way dropbox:Documents /share/Documents
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
 # 7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
-# rclone move --checksum /tmp/securedocuments.7z dropbox:/SecureDocuments  --dry-run
+# rclone move --checksum /tmp/securedocuments.7z dropbox:SecureDocuments  --dry-run
 tar --exclude-vcs -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
 ls -lh /tmp/backup*.tar.gz
     if [ $DAY = "01" ]; then
-        BACKUPDIR="/Backups/"
-        else BACKUPDIR="/Backups/"$YEAR"/"$MONTH
+        BACKUPDIR="Backups/"
+        else BACKUPDIR="Backups/"$YEAR"/"$MONTH
     fi
 echo $BACKUPDIR
 rclone move /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz box:$BACKUPDIR
@@ -79,8 +79,8 @@ echo "=================================================="
 7zz a -mhe -xr\!.git -p$password /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z /share/SecureDocuments/* -r > /dev/null
 ls -lh /tmp/securedocuments*.7z
     if [ $DAY = "01" ]; then
-        BACKUPDIR="/SecureBackups/"
-        else BACKUPDIR="/SecureBackups/"$YEAR"/"$MONTH
+        BACKUPDIR="SecureBackups/"
+        else BACKUPDIR="SecureBackups/"$YEAR"/"$MONTH
     fi
 echo $BACKUPDIR
 rclone move /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z box:$BACKUPDIR

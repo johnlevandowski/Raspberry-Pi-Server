@@ -24,6 +24,15 @@
 		reverse_proxy http://nextcloud-aio-apache:11000
 	}
 
+	@openspeedtest host openspeedtest.{$LANDOMAIN}
+	handle @openspeedtest {
+		reverse_proxy http://openspeedtest:3000 {
+			request_buffers 35MiB
+			response_buffers 35MiB
+			flush_interval -1
+		}
+	}
+
 	handle {
 		respond "The subdomain you attempted to navigate to is not configured."
 	}
