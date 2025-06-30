@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Configure rclone remotes
+# Install 7zip
+# sudo apt install 7zip
+
+# Install rclone and configure remotes
 # curl -fsSL https://rclone.org/install.sh -o rclone-install.sh
 # sudo bash rclone-install.sh
 #
@@ -10,6 +13,13 @@
 # cp -r ~/install/cron/ ~/cron/
 # cp ~/cron/sample.env ~/cron/.env
 # nano ~/cron/.env
+
+# Find misc files to delete
+# find /share/ -name ".DS_Store" -type f -print -delete
+# find /share/ -name "desktop.ini" -type f -print -delete
+# find /share/ -name "thumbs.db" -type f -print -delete
+# find /share/ -name ".~lock.*" -type f
+# find /share/ -name ".git" -type d
 
 # crontab -e
 # 1 * * * * /bin/bash -c "~/cron/share-backup.sh"
@@ -45,12 +55,21 @@ rclone copy $EXCLUDE /share/iTunes box:iTunes
 rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:Documents
 
 # Create Backup of Secure Documents and move to Dropbox
-7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
+7zz a -mhe -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
 rclone move --checksum /tmp/securedocuments.7z dropbox:SecureDocuments
 
 if [ $HOUR = "22" ]; then
 
 # Once a Day Backup
+
+echo "Files on local that can be deleted"
+echo "=================================================="
+find /share/ -name ".DS_Store" -type f
+find /share/ -name "desktop.ini" -type f
+find /share/ -name "thumbs.db" -type f
+find /share/ -name ".~lock.*" -type f
+find /share/ -name ".git" -type d
+echo ""
 
 echo "Files on remote not on local"
 echo "=================================================="
@@ -62,9 +81,9 @@ echo ""
 
 echo "Create Backup of Documents and Move to Box"
 echo "=================================================="
-# 7zz a -mhe -xr\!.git -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
-# rclone move --checksum /tmp/securedocuments.7z dropbox:SecureDocuments  --dry-run
-tar --exclude-vcs -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
+# 7zz a -mhe -p$password /tmp/backup-$YEAR-$MONTH-$DAY.7z /share/Documents/* -r  > /dev/null
+# rclone move /tmp/backup-$YEAR-$MONTH-$DAY.7z box:$BACKUPDIR
+tar -zcf /tmp/backup-$YEAR-$MONTH-$DAY.tar.gz /share/Documents
 ls -lh /tmp/backup*.tar.gz
     if [ $DAY = "01" ]; then
         BACKUPDIR="Backups/"
@@ -76,7 +95,7 @@ echo ""
 
 echo "Create Backup of Secure Documents and Move to Box"
 echo "=================================================="
-7zz a -mhe -xr\!.git -p$password /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z /share/SecureDocuments/* -r > /dev/null
+7zz a -mhe -p$password /tmp/securedocuments-$YEAR-$MONTH-$DAY.7z /share/SecureDocuments/* -r > /dev/null
 ls -lh /tmp/securedocuments*.7z
     if [ $DAY = "01" ]; then
         BACKUPDIR="SecureBackups/"

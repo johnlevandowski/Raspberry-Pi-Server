@@ -61,7 +61,7 @@ sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~
 sudo apt update
 sudo apt full-upgrade -y
-sudo apt install dnsutils smartmontools -y
+sudo apt install dnsutils -y
 ~~~
 
 6. Raspberry PI boot options
