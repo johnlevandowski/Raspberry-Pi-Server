@@ -10,6 +10,9 @@ newgrp docker
 
 ~~~
 sudo nano /etc/docker/daemon.json
+~~~
+
+~~~
 {
   "log-driver": "journald",
   "log-opts": {
@@ -47,7 +50,7 @@ docker run hello-world
 docker container list --all
 docker container remove (NAMES listed)
 docker system df
-docker system prune
+docker system prune -a
 ~~~
 
 # Copy docker directories to root of home directory for use
