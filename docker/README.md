@@ -11,7 +11,10 @@ newgrp docker
 ~~~
 sudo nano /etc/docker/daemon.json
 {
-  "log-driver": "journald"
+  "log-driver": "journald",
+  "log-opts": {
+    "tag": "{{.Name}}"
+  }
 }
 ~~~
 
@@ -23,6 +26,15 @@ docker network create \
 --ip-range=172.21.21.128/25 \
 --gateway=172.21.21.1 \
 caddy_network
+~~~
+
+~~~
+docker network create \
+--driver=bridge \
+--subnet=172.21.53.0/24 \
+--ip-range=172.21.53.128/25 \
+--gateway=172.21.53.1 \
+unbound_network
 ~~~
 
 ~~~

@@ -1,0 +1,18 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1.23.16
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - ./app-data:/app/data
+    networks:
+      caddy_network:
+        ipv4_address: '172.21.21.3'
+      unbound_network:
+
+networks:
+  caddy_network:
+    external: true
+  unbound_network:
+    external: true

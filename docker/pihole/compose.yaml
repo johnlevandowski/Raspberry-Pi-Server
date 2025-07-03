@@ -13,6 +13,7 @@ services:
       FTLCONF_dns_domain: 'lan.johnl.dev'
       FTLCONF_dns_expandHosts: 'true'
       FTLCONF_dns_piholePTR: 'HOSTNAMEFQDN'
+      FTLCONF_dns_queryLogging: 'false'
       FTLCONF_dns_specialDomains_iCloudPrivateRelay: 'false'
       FTLCONF_dns_upstreams: '172.21.53.53'
       FTLCONF_misc_etc_dnsmasq_d: 'true'

@@ -33,6 +33,11 @@
 		}
 	}
 
+	@uptime-kuma host uptime-kuma.{$SUBDOMAIN}
+	handle @uptime-kuma {
+		reverse_proxy http://uptime-kuma:3001
+	}
+
 	handle {
 		respond "The subdomain you attempted to navigate to is not configured."
 	}
@@ -58,6 +63,11 @@
 	@nextcloud host nextcloud.{$TSDOMAIN}
 	handle @nextcloud {
 		reverse_proxy http://nextcloud-aio-apache:11000
+	}
+
+	@uptime-kuma host uptime-kuma.{$TSDOMAIN}
+	handle @uptime-kuma {
+		reverse_proxy http://uptime-kuma:3001
 	}
 
 	handle {

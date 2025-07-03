@@ -30,10 +30,21 @@ sudo ufw allow to 0.0.0.0/0 port 67 proto udp comment "DHCP"
 sudo ufw allow from 172.21.21.2 to 172.17.0.1 port 8080 proto tcp comment "Caddy proxy to pihole webserver"
 ~~~
 
+## Caddy
+~~~
+sudo ufw allow 80/tcp comment "HTTP"
+sudo ufw allow 443 comment "HTTPS"
+~~~
+
 ## Samba
 ~~~
 # sudo ufw allow 139/tcp comment "samba netbios"
 sudo ufw allow 445/tcp comment "samba"
+~~~
+
+## Uptime Kuma
+~~~
+sudo ufw allow from 172.21.21.3 to 172.17.0.1 port 25 proto tcp comment "uptime kuma to postfix"
 ~~~
 
 ## iperf3

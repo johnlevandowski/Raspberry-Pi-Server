@@ -10,8 +10,9 @@
 # rclone config
 # Use web browser to automatically authenticate rclone with remote? = no
 
-# cp -r ~/install/cron/ ~/cron/
-# cp ~/cron/sample.env ~/cron/.env
+# cp ~/install/cron/share-backup.sh ~/cron/
+# cp ~/install/cron/sample.env ~/cron/.env
+# chmod +x ~/cron/*.sh
 # nano ~/cron/.env
 
 # Find misc files to delete
