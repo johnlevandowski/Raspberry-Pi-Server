@@ -1,7 +1,7 @@
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:latest
+    image: pihole/pihole:2025.06.2
     network_mode: host
     environment:
       TZ: 'US/Mountain'
@@ -11,6 +11,7 @@ services:
       FTLCONF_dhcp_router: '192.168.0.1'
       FTLCONF_dhcp_leaseTime: '24h'
       FTLCONF_dns_domain: 'lan.johnl.dev'
+      FTLCONF_dns_domainNeeded: 'true'
       FTLCONF_dns_expandHosts: 'true'
       FTLCONF_dns_piholePTR: 'HOSTNAMEFQDN'
       FTLCONF_dns_queryLogging: 'false'
@@ -21,7 +22,7 @@ services:
       FTLCONF_ntp_ipv6_active: 'false'
       FTLCONF_ntp_sync_active: 'false'
       FTLCONF_webserver_api_password: ${FTLCONF_webserver_api_password} #from .env file
-      FTLCONF_webserver_domain: 'pihole.rpi5.lan.johnl.dev'
+      FTLCONF_webserver_domain: ${FTLCONF_webserver_domain}
       FTLCONF_webserver_port: 8080
       FTLCONF_webserver_session_timeout: 2592000
     volumes:
@@ -38,7 +39,7 @@ services:
   unbound:
     container_name: unbound
     hostname: unbound
-    image: mvance/unbound-rpi:latest # for amd/intel use mvance/unbound:latest
+    image: mvance/unbound-rpi:1.22.0 # for amd/intel use mvance/unbound:latest
     volumes:
       - "./etc-unbound:/opt/unbound/etc/unbound"
     cap_add:
@@ -50,7 +51,4 @@ services:
 
 networks:
   unbound_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.21.53.0/24
+    external: true
