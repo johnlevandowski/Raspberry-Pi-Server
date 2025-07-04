@@ -16,6 +16,9 @@ swap_usage=$(free -m | awk 'NR==3{printf "%.2f", $3/$2}')
 # monitor disk space
 disk_usage=$(df -h / | awk 'NR==2{printf "%.2f", $5/100}')
 
+# internet test
+internet=$(ping -c 1 -W 1 google.com &> /dev/null && echo Online || echo Offline)
+
 # monitor network usage
 #network_connections=$(netstat -tuln | awk 'NR>2{print $6}' | sort | uniq -c | awk '{print $2":"$1}')
 
@@ -28,10 +31,10 @@ disk_usage=$(df -h / | awk 'NR==2{printf "%.2f", $5/100}')
 # Is security up to date ?
 #security_updates=$(apt list --upgradable 2>/dev/null | grep -i security)
 
-csv_header_output='date,temperature,load 1 minute,load 5 minutes,load 15 minutes,memory usage,swap usage,disk usage'
+csv_header_output='date,temperature,load 1 minute,load 5 minutes,load 15 minutes,memory usage,swap usage,disk usage,internet'
 
 # log concatenation
-csv_output=''$datetime','$cpu_temp','$load','$memory_usage','$swap_usage','$disk_usage''
+csv_output=''$datetime','$cpu_temp','$load','$memory_usage','$swap_usage','$disk_usage','$internet''
 
 #FILE='monitor.csv'
 #if [ -f $FILE ]; then

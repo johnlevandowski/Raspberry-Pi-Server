@@ -33,7 +33,7 @@
 		}
 	}
 
-	@uptime-kuma host uptime-kuma.{$SUBDOMAIN}
+	@uptime-kuma host uptime-kuma.{$LANDOMAIN}
 	handle @uptime-kuma {
 		reverse_proxy http://uptime-kuma:3001
 	}
