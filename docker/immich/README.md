@@ -36,10 +36,10 @@ networks:
 Add folders to backup to .env  
 
 ~~~
-BACKUP_LOCATION=/share/pictures/immich/backups
-LIBRARY_LOCATION=/share/pictures/immich/library
-PROFILE_LOCATION=/share/pictures/immich/profile 
-UPLOADS_LOCATION=/share/pictures/immich/upload
+BACKUP_LOCATION=/share/lan/rpi5/immich/backups
+LIBRARY_LOCATION=/share/lan/rpi5/immich/library
+PROFILE_LOCATION=/share/lan/rpi5/immich/profile 
+UPLOADS_LOCATION=/share/lan/rpi5/immich/upload
 ~~~
 
 Add timezone to .env  
@@ -48,15 +48,16 @@ Add timezone to .env
 TZ=US/Mountain
 ~~~
 
-~~~
-mkdir /share/pictures/immich
-~~~
-
 Change IMMICH_VERSION in .env  
 Change DB_PASSWORD in .env  
+
+~~~
+mkdir -p /share/lan/rpi5/immich
+~~~
 
 Create immich-machine-learning on virtualbox  
 https://immich.app/docs/guides/remote-machine-learning/  
 
-Immich > Administration > Settings > Machine Learning Settings > URL = change to virtualbox machine temporarily for mass load of pictures  
-Immich > Administration > External Library > Create Library > Path = /share/pictures/2003 to test  
+Immich > Administration > Settings > Machine Learning Settings > URL = change to virtualbox machine IP temporarily for mass load of pictures - default is http://immich-machine-learning:3003  
+Immich > Administration > Settings > Machine Learning Settings > Facial Recognition > Enable facial recognition = OFF   
+Immich > Administration > External Library > Create Library > Path = /share/pictures/ 
