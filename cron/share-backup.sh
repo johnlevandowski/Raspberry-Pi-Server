@@ -52,6 +52,9 @@ rclone copy $EXCLUDE /share/Pictures box:Pictures
 # Copy iTunes Music to Box
 rclone copy $EXCLUDE /share/iTunes box:iTunes
 
+# Copy lan to Box
+rclone copy $EXCLUDE /share/lan box:lan
+
 # Copy Documents to Dropbox exluding gnucash log files
 rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:Documents
 
@@ -77,6 +80,7 @@ echo "=================================================="
 # Useful for showing files on remote that may be manually removed
 rclone check -q --one-way box:Pictures /share/Pictures
 rclone check -q --one-way box:iTunes /share/iTunes
+rclone check -q --one-way box:lan /share/lan
 rclone check -q --one-way dropbox:Documents /share/Documents
 echo ""
 

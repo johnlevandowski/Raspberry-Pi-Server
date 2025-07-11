@@ -1,7 +1,7 @@
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:2025.06.2
+    image: pihole/pihole:${PIHOLE_VERSION}
     network_mode: host
     environment:
       TZ: 'US/Mountain'
@@ -39,9 +39,13 @@ services:
   unbound:
     container_name: unbound
     hostname: unbound
-    image: mvance/unbound-rpi:1.22.0 # for amd/intel use mvance/unbound:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ALPINE_VERSION: ${ALPINE_VERSION}
     volumes:
-      - "./etc-unbound:/opt/unbound/etc/unbound"
+      - "./etc-unbound:/etc/unbound"
     cap_add:
        - NET_ADMIN
     restart: unless-stopped

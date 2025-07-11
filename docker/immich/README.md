@@ -6,7 +6,7 @@ https://immich.app/docs/install/docker-compose
 Add external volume to compose.yaml  
 
 ~~~
-      - /share/pictures:/share/pictures:ro
+      - /share/Pictures:/share/Pictures:ro
 ~~~
 
 Add folders to backup to compose.yaml  
@@ -31,6 +31,11 @@ Add caddy_network to 4 services in compose.yaml
 networks:
   caddy_network:
     external: true
+~~~
+
+Reduce redis log verbosity in compose.yaml redis: section  
+~~~
+    command: redis-server --loglevel warning
 ~~~
 
 Add folders to backup to .env  
@@ -58,6 +63,9 @@ mkdir -p /share/lan/rpi5/immich
 Create immich-machine-learning on virtualbox  
 https://immich.app/docs/guides/remote-machine-learning/  
 
-Immich > Administration > Settings > Machine Learning Settings > URL = change to virtualbox machine IP temporarily for mass load of pictures - default is http://immich-machine-learning:3003  
-Immich > Administration > Settings > Machine Learning Settings > Facial Recognition > Enable facial recognition = OFF   
-Immich > Administration > External Library > Create Library > Path = /share/pictures/ 
+Immich > Administration > Settings > Machine Learning Settings > URL = http://192.168.0.12:3003 (virtualbox)  
+Immich > Administration > Settings > Machine Learning Settings > Facial Recognition > Enable facial recognition = OFF  
+Immich > Administration > External Library > Create Library > Path = /share/Pictures/  
+
+After import of external library  
+Immich > Administration > Settings > Machine Learning Settings > URL = http://immich-machine-learning:3003  
