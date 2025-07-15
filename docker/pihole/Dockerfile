@@ -2,7 +2,9 @@ ARG ALPINE_VERSION
 
 FROM alpine:${ALPINE_VERSION:-latest}
 
-RUN apk add --no-cache unbound openssl drill && \
+ARG UNBOUND_VERSION
+
+RUN apk add --no-cache unbound=${UNBOUND_VERSION} openssl drill && \
         rm -f /etc/unbound/unbound.conf
 
 COPY --chmod=755 scripts /usr/local/bin

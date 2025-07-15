@@ -64,3 +64,18 @@ sudo tailscale up --accept-dns=false
 
 PiHole > Settings > DNS > Interface Settings = Permit all origins  
 PiHole > Settings > DNS > Conditional Forwarding = true,100.64.0.0/10,100.100.100.100  
+
+### Limit tailscale log verbosity
+~~~
+sudo systemctl edit tailscaled.service
+~~~
+
+~~~
+[Service]
+LogLevelMax=notice
+~~~
+
+~~~
+sudo cat /etc/systemd/system/tailscaled.service.d/override.conf
+sudo systemctl daemon-reload && systemctl restart tailscaled
+~~~

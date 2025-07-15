@@ -51,7 +51,8 @@ sudo raspi-config nonint do_change_locale "en_US.UTF-8 UTF-8"
 sudo nmcli c show
 sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.2/24 ipv4.method manual
 sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
-sudo nmcli c mod "Wired connection 1" ipv4.dns 1.0.0.1 # use cloudflare as centurylink fails on debian.org when using pihole/unbound
+sudo nmcli c mod "Wired connection 1" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
+sudo nmcli c mod "Wired connection 1" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
 sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~
 

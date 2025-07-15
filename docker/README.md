@@ -75,5 +75,5 @@ cgroup_enable=cpuset cgroup_enable=memory
 # Compare local docker directory vs github version
 ~~~
 git -C ~/install/ pull
-diff -r --exclude=.env ~/docker/ ~/install/docker/
-~~~
+diff -r --exclude=.env --exclude=*.md ~/docker/ ~/install/docker/
+ ~~~

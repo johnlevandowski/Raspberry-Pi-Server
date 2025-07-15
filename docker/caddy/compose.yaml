@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        CADDY_VERSION: ${CADDY_VERSION}
+    image: jlevandowski/caddy:${CADDY_VERSION}
     container_name: caddy
     hostname: caddy
     restart: unless-stopped

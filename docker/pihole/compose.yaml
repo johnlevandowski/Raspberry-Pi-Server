@@ -44,6 +44,8 @@ services:
       dockerfile: Dockerfile
       args:
         ALPINE_VERSION: ${ALPINE_VERSION}
+        UNBOUND_VERSION: ${UNBOUND_VERSION}
+    image: jlevandowski/unbound:${ALPINE_VERSION}-${UNBOUND_VERSION}
     volumes:
       - "./etc-unbound:/etc/unbound"
     cap_add:
