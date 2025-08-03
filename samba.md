@@ -9,7 +9,11 @@ sudo smbpasswd -a john
 ## Set up share directory
 ~~~
 sudo mkdir /share
-sudo chown -R 1000:1000 /share
+sudo chown 1000:1000 /share
+sudo chown -R 1000:1000 /share/Documents
+sudo chown -R 1000:1000 /share/iTunes
+sudo chown -R 1000:1000 /share/Pictures
+sudo chown -R 1000:1000 /share/SecureDocuments
 ~~~
 
 ## Configure Samba

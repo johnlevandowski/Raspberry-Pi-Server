@@ -9,7 +9,13 @@ Add external volume to compose.yaml
       - /share/Pictures:/share/Pictures:ro
 ~~~
 
-Add folders to backup to compose.yaml  
+Add thumbs location to compose.yaml  
+
+~~~
+      - ${THUMBS_LOCATION}:/usr/src/app/upload/thumbs
+~~~
+
+Add folders to backup to compose.yaml - not needed with moving library location  
 
 ~~~
       - ${BACKUP_LOCATION}:/usr/src/app/upload/backups
@@ -38,13 +44,14 @@ Reduce redis log verbosity in compose.yaml redis: section
     command: redis-server --loglevel warning
 ~~~
 
-Change library location in .env - not needed as backing up thumbs folder to dropbox causes issues with rate limiting  
+Change library location in .env  
 
 ~~~
 UPLOAD_LOCATION=/share/lan/rpi5/immich
+THUMBS_LOCATION=./library/thumbs
 ~~~
 
-Add folders to backup to .env  
+Add folders to backup to .env - not needed with moving library location  
 
 ~~~
 BACKUP_LOCATION=/share/lan/rpi5/immich/backups
