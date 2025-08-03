@@ -23,13 +23,13 @@
 # find /share/ -name ".git" -type d
 
 # crontab -e
-# 1 * * * * /bin/bash -c "~/cron/share-backup.sh"
+# 1 * * * * bash ~/cron/share-backup.sh
 
 source ~/cron/.env
 
 # Don't run if script is currently running
-script_name=$(basename -- "$0")
-for pid in $(pidof -x $script_name); do
+script_name="bash /home/john/cron/share-backup.sh"
+for pid in $(pgrep -f "$script_name"); do
     if [ $pid != $$ ]; then
         echo "[$(date)] : $script_name : Process is already running with PID $pid"
         exit 1
@@ -52,8 +52,8 @@ rclone copy $EXCLUDE /share/Pictures box:Pictures
 # Copy iTunes Music to Box
 rclone copy $EXCLUDE /share/iTunes box:iTunes
 
-# Copy lan to Box
-rclone copy $EXCLUDE /share/lan box:lan
+# Sync lan to Box - so database backups are deleted
+rclone sync $EXCLUDE /share/lan box:lan
 
 # Copy Documents to Dropbox exluding gnucash log files
 rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:Documents
@@ -80,7 +80,6 @@ echo "=================================================="
 # Useful for showing files on remote that may be manually removed
 rclone check -q --one-way box:Pictures /share/Pictures
 rclone check -q --one-way box:iTunes /share/iTunes
-rclone check -q --one-way box:lan /share/lan
 rclone check -q --one-way dropbox:Documents /share/Documents
 echo ""
 

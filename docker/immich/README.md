@@ -38,6 +38,12 @@ Reduce redis log verbosity in compose.yaml redis: section
     command: redis-server --loglevel warning
 ~~~
 
+Change library location in .env - not needed as backing up thumbs folder to dropbox causes issues with rate limiting  
+
+~~~
+UPLOAD_LOCATION=/share/lan/rpi5/immich
+~~~
+
 Add folders to backup to .env  
 
 ~~~
