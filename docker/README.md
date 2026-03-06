@@ -66,7 +66,7 @@ nano ~/docker/caddy/.env
 nano ~/docker/pihole/.env
 ~~~
 
-# Enable memory reporting in docker stats for raspberry pi by adding the follwing config to end of line 1
+# Enable memory reporting in docker stats for raspberry pi by adding the following config to end of line 1
 ~~~
 nano /boot/firmware/cmdline.txt
 cgroup_enable=cpuset cgroup_enable=memory
@@ -77,3 +77,11 @@ cgroup_enable=cpuset cgroup_enable=memory
 git -C ~/install/ pull
 diff -r --exclude=.env --exclude=*.md ~/docker/ ~/install/docker/
  ~~~
+
+# Container update
+~~~
+nano .env
+docker compose pull
+docker compose down
+docker compose up -d
+~~~

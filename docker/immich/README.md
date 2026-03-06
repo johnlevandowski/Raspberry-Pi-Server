@@ -12,16 +12,7 @@ Add external volume to compose.yaml
 Add thumbs location to compose.yaml  
 
 ~~~
-      - ${THUMBS_LOCATION}:/usr/src/app/upload/thumbs
-~~~
-
-Add folders to backup to compose.yaml - not needed with moving library location  
-
-~~~
-      - ${BACKUP_LOCATION}:/usr/src/app/upload/backups
-      - ${LIBRARY_LOCATION}:/usr/src/app/upload/library
-      - ${PROFILE_LOCATION}:/usr/src/app/upload/profile
-      - ${UPLOADS_LOCATION}:/usr/src/app/upload/upload
+      - ${THUMBS_LOCATION}:/data/thumbs
 ~~~
 
 Comment out ports in compose.yaml immich_server  
@@ -51,15 +42,6 @@ UPLOAD_LOCATION=/share/lan/rpi5/immich
 THUMBS_LOCATION=./library/thumbs
 ~~~
 
-Add folders to backup to .env - not needed with moving library location  
-
-~~~
-BACKUP_LOCATION=/share/lan/rpi5/immich/backups
-LIBRARY_LOCATION=/share/lan/rpi5/immich/library
-PROFILE_LOCATION=/share/lan/rpi5/immich/profile 
-UPLOADS_LOCATION=/share/lan/rpi5/immich/upload
-~~~
-
 Add timezone to .env  
 
 ~~~
@@ -82,3 +64,10 @@ Immich > Administration > External Library > Create Library > Path = /share/Pict
 
 After import of external library  
 Immich > Administration > Settings > Machine Learning Settings > URL = http://immich-machine-learning:3003  
+
+https://docs.immich.app/features/searching/#clip-models > English > Pareto Optimal = CHECKED
+https://github.com/immich-app/immich/discussions/11862
+Immich > Administration > Settings > Machine Learning Settings > Smart Search > CLIP Model = 
+DEFAULT = ViT-B-32__openai
+ViT-B-16-SigLIP__webli (faster) or ViT-B-16-SigLIP-384__webli (slower)
+Immich > Administration > Job Queues > Smart Search > All

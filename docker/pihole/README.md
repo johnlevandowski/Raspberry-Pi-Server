@@ -1,6 +1,6 @@
 # Pi-hole
 
-## Enable unbound-control
+## Enable unbound-control - no longer needed as I'm building my own unbound package and this is done as part of that
 ~~~
 docker exec -it unbound unbound-control-setup  
 ~~~
@@ -54,6 +54,11 @@ PiHole > Tools > Update Gravity
 ## PiHole configuration
 Settings > Local DNS Records > Add as needed  
 Settings > DHCP > DHCP server enabled = ON  
+
+## PiHole Change permission of logrotate so backup on windows works
+~~~
+sudo chmod 0644 ~/docker/pihole/etc-pihole/logrotate
+~~~
 
 ## Tailscale
 ~~~
