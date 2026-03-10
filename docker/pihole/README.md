@@ -15,6 +15,10 @@ control-enable: yes at bottom of config file
 
 ## Validate dnssec is working
 ~~~
+https://dnscheck.tools/
+~~~
+
+~~~
 dig fail01.dnssec.works @localhost
 dig dnssec.works @localhost
 ~~~

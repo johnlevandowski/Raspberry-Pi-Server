@@ -1,0 +1,16 @@
+services:
+  hugo:
+    image: ghcr.io/gohugoio/hugo:v0.157.0
+    container_name: hugo
+    hostname: hugo
+    volumes:
+    #  - /share/Documents/Hugo/hugowebsite:/project
+      - ./project:/project
+    # The command below starts the Hugo server with live reloading
+    command: server --bind 0.0.0.0 --renderToMemory
+    networks:
+      caddy_network:
+
+networks:
+  caddy_network:
+    external: true
