@@ -8,6 +8,7 @@
 # sudo bash rclone-install.sh
 #
 # rclone config
+# use custom app API for dropbox to resolve Too many requests or write operations errors
 # Use web browser to automatically authenticate rclone with remote? = no
 
 # cp ~/install/cron/share-backup.sh ~/cron/

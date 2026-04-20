@@ -65,9 +65,9 @@ Immich > Administration > External Library > Create Library > Path = /share/Pict
 After import of external library  
 Immich > Administration > Settings > Machine Learning Settings > URL = http://immich-machine-learning:3003  
 
-https://docs.immich.app/features/searching/#clip-models > English > Pareto Optimal = CHECKED
-https://github.com/immich-app/immich/discussions/11862
-Immich > Administration > Settings > Machine Learning Settings > Smart Search > CLIP Model = 
-DEFAULT = ViT-B-32__openai
-ViT-B-16-SigLIP__webli (faster) or ViT-B-16-SigLIP-384__webli (slower)
-Immich > Administration > Job Queues > Smart Search > All
+https://docs.immich.app/features/searching/#clip-models > English > Pareto Optimal = CHECKED  
+https://github.com/immich-app/immich/discussions/11862  
+Immich > Administration > Settings > Machine Learning Settings > Smart Search > CLIP Model =  
+DEFAULT = ViT-B-32__openai  
+ViT-B-16-SigLIP__webli (faster) or ViT-B-16-SigLIP-384__webli (slower)  
+Immich > Administration > Job Queues > Smart Search > All  

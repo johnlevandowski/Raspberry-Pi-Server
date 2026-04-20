@@ -23,6 +23,11 @@ sudo journalctl -k -r -g "UFW"
 sudo journalctl -k -r --no-pager -n 10 -g "UFW" 
 ~~~
 
+## Change logging from low to off after testing
+~~~
+sudo ufw logging off
+~~~
+
 ## PiHole
 ~~~
 sudo ufw allow 53 comment "DNS"
@@ -50,11 +55,6 @@ sudo ufw allow from 172.21.21.3 to 172.17.0.1 port 25 proto tcp comment "uptime 
 ## iperf3
 ~~~
 sudo ufw allow 5201 comment "iperf3"
-~~~
-
-## Change logging from low to off after testing
-~~~
-sudo ufw logging off
 ~~~
 
 ## Other rules not needed after changing logging to off

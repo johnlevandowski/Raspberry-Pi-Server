@@ -11,8 +11,8 @@ Notes for installing new OS:
 
 ## Install Preparation
 * Open [Raspberry Pi Imager](https://www.raspberrypi.org/software/) on remote computer
-* Click **Choose OS**, click **Raspberry Pi OS (other)**, click **Raspberry Pi OS Lite (64 bit)**
-* Choose hostname = rpi4b
+* OS > Raspberry Pi OS (other) > Raspberry Pi OS Lite (64 bit)
+* Hostname = rpi5
 * Capital City = Washington, DC
 * Timezone = America/Boise - doesn't seem to work
 * Keyboard layout = us
@@ -44,17 +44,19 @@ timedatectl
 * Configure Locale - raspberry pi OS defaults to en_GB
 ~~~
 sudo raspi-config nonint do_change_locale "en_US.UTF-8 UTF-8"
-locale
+locale # will change after reboot
 ~~~
 
 * Set fixed IP address
 ~~~
 sudo nmcli c show
-sudo nmcli c mod "netplan-eth0" ipv4.addresses 192.168.0.2/24 ipv4.method manual
-sudo nmcli c mod "netplan-eth0" ipv4.gateway 192.168.0.1
-sudo nmcli c mod "netplan-eth0" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
-sudo nmcli c mod "netplan-eth0" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
-sudo nmcli c down "netplan-eth0" && sudo nmcli c up "netplan-eth0"
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.2/24 ipv4.method manual
+sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
+sudo nmcli c mod "Wired connection 1" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
+sudo nmcli c mod "Wired connection 1" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~
 
 * Set hostname in /etc/hosts  
@@ -72,7 +74,7 @@ sudo nano /etc/hosts
 ~~~
 sudo apt update
 sudo apt full-upgrade -y
-sudo apt install dnsutils -y
+sudo apt install bind9-dnsutils -y
 ~~~
 
 * Raspberry PI boot options
@@ -101,13 +103,21 @@ echo 'SystemMaxUse=1000M' | sudo tee -a $JOURNALCONF > /dev/null
 sudo systemctl restart systemd-journald
 ~~~
 
-* Mount /tmp on tmpfs - seems to be default in debian 13
+* Mount /tmp on tmpfs - default in debian 13
 ~~~
 FSTAB="/etc/fstab"
 echo '' | sudo tee -a $FSTAB > /dev/null
 echo 'tmpfs /tmp tmpfs defaults,noatime,nosuid,nodev,noexec 0 0' | sudo tee -a $FSTAB > /dev/null
 tail -n 6 $FSTAB
 sudo rm -rfv /tmp
+~~~
+
+* Disable swap when using microSD card
+~~~
+SWAPCONF="/etc/rpi/swap.conf.d/99-disable-swap.conf"
+sudo install -Dv /dev/null $SWAPCONF
+echo '[Main]' | sudo tee -a $SWAPCONF > /dev/null
+echo 'Mechanism=none' | sudo tee -a $SWAPCONF > /dev/null
 ~~~
 
 * Raspberry Pi bootloader EEPROM

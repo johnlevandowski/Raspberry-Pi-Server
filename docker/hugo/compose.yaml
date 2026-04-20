@@ -4,10 +4,10 @@ services:
     container_name: hugo
     hostname: hugo
     volumes:
-    #  - /share/Documents/Hugo/hugowebsite:/project
-      - ./project:/project
+      - /share/Documents/Hugo/hugowebsite:/project
+    #  - ./project:/project
     # The command below starts the Hugo server with live reloading
-    command: server --bind 0.0.0.0 --renderToMemory
+    command: server --bind 0.0.0.0 --renderToMemory --baseURL=https://hugo.rpi5.lan.johnl.dev --appendPort=false
     networks:
       caddy_network:
 
