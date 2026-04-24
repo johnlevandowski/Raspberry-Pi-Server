@@ -47,6 +47,18 @@ sudo raspi-config nonint do_change_locale "en_US.UTF-8 UTF-8"
 locale # will change after reboot
 ~~~
 
+* Disable IPv6 Network
+~~~
+SYSCTLCONF="/etc/sysctl.d/70-disable-ipv6.conf"
+echo 'net.ipv6.conf.all.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
+echo 'net.ipv6.conf.default.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
+echo 'net.ipv6.conf.lo.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
+echo ""
+sudo sysctl -p -f $SYSCTLCONF
+echo ""
+ip address
+~~~
+
 * Set fixed IP address
 ~~~
 sudo nmcli c show
@@ -55,6 +67,7 @@ sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.2/24 ipv4.method 
 sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
 sudo nmcli c mod "Wired connection 1" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
 sudo nmcli c mod "Wired connection 1" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
+sudo nmcli c mod "Wired connection 1" ipv6.method disabled
 sudo nmcli c show "Wired connection 1"
 sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~

@@ -26,6 +26,10 @@ echo "# sudo rpi-eeprom-update -a"
 echo "# and then reboot after updating"
 echo ""
 
+echo "# current fan state"
+cat /sys/class/thermal/cooling_device0/cur_state
+echo ""
+
 echo "# temperature hopefully below 50C, if not check fan is working"
 sudo vcgencmd measure_temp
 echo ""
