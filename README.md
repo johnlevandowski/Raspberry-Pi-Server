@@ -72,6 +72,15 @@ sudo nmcli c show "Wired connection 1"
 sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
 ~~~
 
+* Revert to DHCP IP address (when changing networks)
+~~~
+sudo nmcli c show
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c mod "Wired connection 1" ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns "" ipv4.dns-options ""
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
+~~~
+
 * Set hostname in /etc/hosts  
 ~~~
 sudo nano /etc/hosts
@@ -109,8 +118,8 @@ sudo systemctl restart systemd-journald
 
 * Reduce journald Journal Size
 ~~~
-JOURNALCONF="/etc/systemd/journald.conf.d/rpi.conf"
-sudo install -Dv /dev/null $JOURNALCONF
+sudo mkdir /etc/systemd/journald.conf.d
+JOURNALCONF="/etc/systemd/journald.conf.d/99-rpi.conf"
 echo '[Journal]' | sudo tee -a $JOURNALCONF > /dev/null
 echo 'SystemMaxUse=1000M' | sudo tee -a $JOURNALCONF > /dev/null
 sudo systemctl restart systemd-journald
@@ -127,10 +136,18 @@ sudo rm -rfv /tmp
 
 * Disable swap when using microSD card
 ~~~
+sudo mkdir /etc/rpi/swap.conf.d
 SWAPCONF="/etc/rpi/swap.conf.d/99-disable-swap.conf"
-sudo install -Dv /dev/null $SWAPCONF
 echo '[Main]' | sudo tee -a $SWAPCONF > /dev/null
 echo 'Mechanism=none' | sudo tee -a $SWAPCONF > /dev/null
+~~~
+
+* Change timesyncd write interval (/var/lib/systemd/timesync/clock) when using microSD card
+~~~
+sudo mkdir /etc/systemd/timesyncd.conf.d
+TIMECONF="/etc/systemd/timesyncd.conf.d/99-time-sync.conf"
+echo '[Time]' | sudo tee -a $TIMECONF > /dev/null
+echo 'SaveIntervalSec=60m' | sudo tee -a $TIMECONF > /dev/null
 ~~~
 
 * Raspberry Pi bootloader EEPROM

@@ -3,8 +3,8 @@
 }
 
 {$LANDOMAIN} {
+	root * /srv
 	file_server
-	# reverse_proxy http://portainer:9000
 }
 
 *.{$LANDOMAIN} {
@@ -54,8 +54,8 @@
 }
 
 {$TSDOMAIN} {
+	root * /srv
 	file_server
-	# reverse_proxy http://portainer:9000
 }
 
 *.{$TSDOMAIN} {
