@@ -28,6 +28,8 @@
 
 source ~/cron/.env
 
+: "${password:?'Error: password environment variable is not set.'}"
+
 # Don't run if script is currently running
 script_name="bash /home/john/cron/share-backup.sh"
 for pid in $(pgrep -f "$script_name"); do
@@ -43,7 +45,7 @@ YEAR=$(echo $DATE | cut -c1-4)
 MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
 HOUR=$(echo $DATE | cut -c9-10)
-EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2 --exclude .~lock.* --exclude .git/"
+EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2 --exclude .~lock.* --exclude .kate-swp --exclude .git/"
 
 # Once an Hour Backup
 
@@ -73,6 +75,7 @@ find /share/ -name ".DS_Store" -type f
 find /share/ -name "desktop.ini" -type f
 find /share/ -name "thumbs.db" -type f
 find /share/ -name ".~lock.*" -type f
+find /share/ -name ".kate-swp" -type f
 find /share/ -name ".git" -type d
 echo ""
 

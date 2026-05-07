@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Dashboard</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --bg: #f8f9fa;
+            --text: #3c4043;
+            --folder-bg: #fff;
+            --header-hover: #f1f3f4;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 0px;
+            margin: 0;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5f6368;
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        .folder {
+            background: var(--folder-bg);
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #dadce0;
+        }
+
+        .folder-header {
+            padding: 10px;
+            background: var(--folder-bg);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem; /* Slightly larger for mobile readability */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .folder-header:active {
+            background: var(--header-hover);
+        }
+
+        .folder-content {
+            display: none;
+            padding: 10px;
+            background: #fff;
+            border-top: 1px solid #f1f3f4;
+        }
+
+        .folder.active > .folder-content {
+            display: block;
+        }
+
+        .link {
+            display: block;
+            padding: 10px 0; /* Larger touch area for fingers */
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.05rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom: 1px solid #fafafa;
+        }
+
+        .link:last-child {
+            border-bottom: none;
+        }
+
+        .icon {
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+            color: #70757a;
+        }
+
+        .folder.active > .folder-header .icon {
+            transform: rotate(90deg);
+        }
+
+        /* Responsive indents for nested folders */
+        .folder-content .folder {
+            box-shadow: none;
+            border: 1px solid #eee;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="bookmarkTree"></div>
+</div>
+
+<script>
+    const BOOKMARK_FILE = 'bookmarks.html';
+
+    async function loadBookmarks() {
+        try {
+            const response = await fetch(BOOKMARK_FILE);
+            if (!response.ok) throw new Error('Could not load bookmarks file.');
+
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, "text/html");
+            const mainList = doc.querySelector('dl');
+
+            if (mainList) {
+                renderLevel(mainList, document.getElementById('bookmarkTree'), 0);
+            }
+        } catch (err) {
+            document.getElementById('bookmarkTree').innerHTML = `<p style="color:red; text-align:center; padding: 20px;">Error: ${err.message}</p>`;
+        }
+    }
+
+    function renderLevel(dl, container, depth) {
+        const items = dl.children;
+        for (let item of items) {
+            if (item.tagName === 'DT') {
+                const firstChild = item.firstElementChild;
+
+                if (firstChild && firstChild.tagName === 'H3') {
+                    const folderDiv = document.createElement('div');
+                    folderDiv.className = depth === 0 ? 'folder active' : 'folder';
+
+                    const header = document.createElement('div');
+                    header.className = 'folder-header';
+                    header.innerHTML = `<span>${firstChild.textContent}</span><span class="icon">▶</span>`;
+
+                    header.onclick = () => {
+                        const isOpening = !folderDiv.classList.contains('active');
+                        folderDiv.classList.toggle('active');
+
+                        if (isOpening) {
+                            setTimeout(() => {
+                                // Adjusted for mobile: scroll slightly above the item
+                                const offset = 20;
+                                const bodyRect = document.body.getBoundingClientRect().top;
+                                const elementRect = folderDiv.getBoundingClientRect().top;
+                                const elementPosition = elementRect - bodyRect;
+                                const offsetPosition = elementPosition - offset;
+
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }, 150);
+                        }
+                    };
+
+                    const content = document.createElement('div');
+                    content.className = 'folder-content';
+
+                    folderDiv.appendChild(header);
+                    folderDiv.appendChild(content);
+                    container.appendChild(folderDiv);
+
+                    const subList = item.querySelector('dl');
+                    if (subList) renderLevel(subList, content, depth + 1);
+
+                } else if (firstChild && firstChild.tagName === 'A') {
+                    const link = document.createElement('a');
+                    link.className = 'link';
+                    link.href = firstChild.href;
+                    link.textContent = firstChild.textContent;
+                    link.target = "_blank";
+                    container.appendChild(link);
+                }
+            }
+        }
+    }
+
+    window.onload = loadBookmarks;
+</script>
+
+</body>
+</html>
