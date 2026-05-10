@@ -1,4 +1,4 @@
-# Raspberry Pi Home Server Installation / Configuration Scripts
+# Raspberry Pi Home Server Installation / Configuration Scripts [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/johnlevandowski/Raspberry-Pi-Server)
 
 Notes for installing new OS:
 * Activate router DHCP and DNS so it's available on the network for setup
@@ -134,6 +134,8 @@ tail -n 6 $FSTAB
 sudo rm -rfv /tmp
 ~~~
 
+## microSD card optimizations
+
 * Disable swap when using microSD card
 ~~~
 sudo mkdir /etc/rpi/swap.conf.d
@@ -149,6 +151,8 @@ TIMECONF="/etc/systemd/timesyncd.conf.d/99-time-sync.conf"
 echo '[Time]' | sudo tee -a $TIMECONF > /dev/null
 echo 'SaveIntervalSec=60m' | sudo tee -a $TIMECONF > /dev/null
 ~~~
+
+## Bootloader updates
 
 * Raspberry Pi bootloader EEPROM
 ~~~
