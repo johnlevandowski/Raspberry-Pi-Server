@@ -3,14 +3,32 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="color-scheme" content="dark light">
       <title>Bookmark Dashboard</title>
       <style>
          :root {
+         /* Light Mode Colors (Default) */
          --primary: #1a73e8;
          --bg: #f8f9fa;
          --text: #3c4043;
-         --folder-bg: #fff;
+         --folder-bg: #ffffff;
          --header-hover: #f1f3f4;
+         --border: #dadce0;
+         --link-border: #fafafa;
+         --icon: #70757a;
+         }
+         @media (prefers-color-scheme: dark) {
+         :root {
+         /* Dark Mode Colors */
+         --primary: #8ab4f8;
+         --bg: #202124;
+         --text: #e8eaed;
+         --folder-bg: #2d2e31;
+         --header-hover: #3c4043;
+         --border: #3c4043;
+         --link-border: #3c4043;
+         --icon: #9aa0a6;
+         }
          }
          body {
          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -20,6 +38,7 @@
          margin: 0;
          line-height: 1.5;
          -webkit-tap-highlight-color: transparent;
+         transition: background 0.3s ease, color 0.3s ease; /* Smooth transition when switching */
          }
          .container {
          max-width: 900px;
@@ -37,7 +56,7 @@
          border-radius: 10px;
          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
          overflow: hidden;
-         border: 1px solid #dadce0;
+         border: 1px solid var(--border);
          }
          .folder-header {
          padding: 10px;
@@ -56,8 +75,8 @@
          .folder-content {
          display: none;
          padding: 10px;
-         background: #fff;
-         border-top: 1px solid #f1f3f4;
+         background: var(--folder-bg);
+         border-top: 1px solid var(--border);
          }
          .folder.active > .folder-content {
          display: block;
@@ -70,14 +89,14 @@
          font-size: 1.05rem;
          overflow: hidden;
          text-overflow: ellipsis;
-         border-bottom: 1px solid #fafafa;
+         border-bottom: 1px solid var(--link-border);
          }
          .link:last-child {
          border-bottom: none;
          }
          .icon {
          font-size: 0.8em;
-         color: #70757a;
+         color: var(--icon);
          }
          .folder.active > .folder-header .icon {
          transform: rotate(90deg);
@@ -92,14 +111,14 @@
          position: -webkit-sticky; /* Required for Safari */
          position: sticky;
          top: 0;
-         background: rgba(248, 249, 250, 0.9); /* Matches your --bg color with transparency */
+         background: var(--bg); /* Matches your --bg color with transparency */
          backdrop-filter: blur(10px);
          -webkit-backdrop-filter: blur(10px);
          padding: 10px;
          display: flex;
          justify-content: center;
          z-index: 1000;
-         border-bottom: 1px solid #dadce0;
+         border-bottom: 1px solid var(--border);
          }
          #resetBtn {
          padding: 10px 24px;
