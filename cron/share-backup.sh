@@ -16,13 +16,6 @@
 # chmod +x ~/cron/*.sh
 # nano ~/cron/.env
 
-# Find misc files to delete
-# find /share/ -name ".DS_Store" -type f -print -delete
-# find /share/ -name "desktop.ini" -type f -print -delete
-# find /share/ -name "thumbs.db" -type f -print -delete
-# find /share/ -name ".~lock.*" -type f
-# find /share/ -name ".git" -type d
-
 # crontab -e
 # 1 * * * * bash ~/cron/share-backup.sh
 
@@ -45,7 +38,7 @@ YEAR=$(echo $DATE | cut -c1-4)
 MONTH=$(echo $DATE | cut -c5-6)
 DAY=$(echo $DATE | cut -c7-8)
 HOUR=$(echo $DATE | cut -c9-10)
-EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2 --exclude .~lock.* --exclude .kate-swp --exclude .git/"
+EXCLUDE="--exclude .DS_Store --exclude desktop.ini --exclude thumbs.db --exclude *.itc2 --exclude .~lock.* --exclude *.kate-swp --exclude .git/"
 
 # Once an Hour Backup
 
@@ -75,7 +68,7 @@ find /share/ -name ".DS_Store" -type f
 find /share/ -name "desktop.ini" -type f
 find /share/ -name "thumbs.db" -type f
 find /share/ -name ".~lock.*" -type f
-find /share/ -name ".kate-swp" -type f
+find /share/ -name "*.kate-swp" -type f
 find /share/ -name ".git" -type d
 echo ""
 
