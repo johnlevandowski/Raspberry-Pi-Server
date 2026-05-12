@@ -54,9 +54,15 @@ rclone sync $EXCLUDE /share/lan box:lan
 # Copy Documents to Dropbox exluding gnucash log files
 rclone copy --checksum --exclude gnucash/*.log $EXCLUDE /share/Documents dropbox:Documents
 
+# Copy Downloads to Dropbox
+rclone copy --checksum $EXCLUDE /share/Downloads dropbox:Downloads
+
 # Create Backup of Secure Documents and move to Dropbox
 7zz a -mhe -p$password /tmp/securedocuments.7z /share/SecureDocuments/* -r  > /dev/null
 rclone move --checksum /tmp/securedocuments.7z dropbox:SecureDocuments
+
+# Copy bookmarsks backup to caddy bookmarks site
+rclone copy /share/Documents/backup/Firefox/bookmarks.html /home/john/docker/caddy/site/bookmarks
 
 if [ $HOUR = "22" ]; then
 
@@ -77,7 +83,9 @@ echo "=================================================="
 # Useful for showing files on remote that may be manually removed
 rclone check -q --one-way box:Pictures /share/Pictures
 rclone check -q --one-way box:iTunes /share/iTunes
+rclone check -q --one-way box:lan /share/lan
 rclone check -q --one-way dropbox:Documents /share/Documents
+rclone check -q --one-way dropbox:Downloads /share/Downloads
 echo ""
 
 echo "Create Backup of Documents and Move to Box"
