@@ -1,13 +1,7 @@
 # adapted from https://hub.docker.com/_/caddy
 services:
   caddy:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        CADDY_VERSION: ${CADDY_VERSION}
-    image: jlevandowski/caddy:${CADDY_VERSION}
-    pull_policy: build
+    image: jlevandowski/caddy-cloudflare:${CADDY_VERSION}
     container_name: caddy
     hostname: caddy
     restart: unless-stopped
