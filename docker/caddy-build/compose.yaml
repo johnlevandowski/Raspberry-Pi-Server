@@ -1,0 +1,8 @@
+services:
+  caddy-cloudflare:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CADDY_VERSION: ${CADDY_VERSION}
+    image: jlevandowski/caddy-cloudflare:${CADDY_VERSION}
