@@ -68,8 +68,9 @@ sudo chmod 0644 ~/docker/pihole/etc-pihole/logrotate
 ~~~
 curl -fsSL https://tailscale.com/install.sh > tailscale.sh
 sh tailscale.sh
-sudo tailscale up --accept-dns=false
+sudo tailscale up --advertise-routes=192.168.0.2/32 --accept-dns=false --ssh
 ~~~
+specifc subnet routing should allow only using lan.johnl.dev domains because it's a specific rule for 1 address  
 
 PiHole > Settings > DNS > Interface Settings = Permit all origins  
 PiHole > Settings > DNS > Conditional Forwarding = true,100.64.0.0/10,100.100.100.100  
