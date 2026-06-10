@@ -59,6 +59,20 @@ echo ""
 ip address
 ~~~
 
+* Increase buffer sizes for unbound so-rcvbuf and so-sndbug
+```
+sudo micro /etc/sysctl.d/80-unbound.conf
+```
+
+```
+net.core.rmem_max=1048576
+net.core.wmem_max=4194304
+```
+
+```
+sudo service procps force-reload
+```
+
 * Set fixed IP address
 ~~~
 sudo nmcli c show
