@@ -11,6 +11,4 @@ unbound-anchor -a /etc/unbound/root.key
 
 wget -q https://www.internic.net/domain/named.cache -O /etc/unbound/root.hints
 
-chown -R unbound:unbound /etc/unbound
-
 exec unbound -dp

@@ -11,11 +11,13 @@ COPY --chmod=755 scripts /usr/local/bin
 
 COPY --chmod=644 conf /etc/unbound
 
+RUN chown -R unbound:unbound /etc/unbound
+
+USER unbound
+
 WORKDIR /etc/unbound
 
-EXPOSE 53/tcp
-EXPOSE 53/udp
-
-HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 CMD drill @127.0.0.1 www.google.com || exit 1
+EXPOSE 5335/tcp
+EXPOSE 5335/udp
 
 ENTRYPOINT [ "entrypoint.sh" ]

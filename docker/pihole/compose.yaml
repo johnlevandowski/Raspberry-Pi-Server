@@ -16,7 +16,7 @@ services:
       FTLCONF_dns_piholePTR: 'HOSTNAMEFQDN'
       FTLCONF_dns_queryLogging: 'false'
       FTLCONF_dns_specialDomains_iCloudPrivateRelay: 'false'
-      FTLCONF_dns_upstreams: '172.21.53.53'
+      FTLCONF_dns_upstreams: '172.21.53.53#5335'
       FTLCONF_misc_etc_dnsmasq_d: 'true'
       FTLCONF_ntp_ipv4_active: 'false'
       FTLCONF_ntp_ipv6_active: 'false'
@@ -45,6 +45,12 @@ services:
     cap_add:
        - NET_ADMIN
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "drill -p 5335 @127.0.0.1 www.google.com || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
     networks:
       unbound_network:
         ipv4_address: '172.21.53.53'
