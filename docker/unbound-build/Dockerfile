@@ -9,6 +9,8 @@ RUN apk add --no-cache unbound=${UNBOUND_VERSION} openssl drill && \
 
 COPY --chmod=755 scripts /usr/local/bin
 
+COPY --chmod=644 conf /etc/unbound
+
 WORKDIR /etc/unbound
 
 EXPOSE 53/tcp

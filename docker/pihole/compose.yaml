@@ -40,8 +40,8 @@ services:
     container_name: unbound
     hostname: unbound
     image: jlevandowski/unbound:${ALPINE_VERSION}-${UNBOUND_VERSION}
-    volumes:
-      - "./etc-unbound:/etc/unbound"
+#    volumes:
+#      - "./etc-unbound:/etc/unbound"
     cap_add:
        - NET_ADMIN
     restart: unless-stopped
