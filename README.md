@@ -59,7 +59,7 @@ echo ""
 ip address
 ~~~
 
-* Increase buffer sizes for unbound so-rcvbuf and so-sndbug
+* Increase buffer sizes for unbound so-rcvbuf and so-sndbuf
 ```
 sudo micro /etc/sysctl.d/80-unbound.conf
 ```

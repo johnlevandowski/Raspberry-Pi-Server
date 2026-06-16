@@ -1,18 +1,5 @@
 # Pi-hole
 
-## Enable unbound-control - no longer needed as I'm building my own unbound package and this is done as part of that
-~~~
-docker exec -it unbound unbound-control-setup  
-~~~
-
-~~~
-nano ~/docker/pihole/etc-unbound/unbound.conf
-~~~
-
-~~~
-control-enable: yes at bottom of config file  
-~~~
-
 ## Validate dnssec is working
 ~~~
 https://dnscheck.tools/
@@ -33,13 +20,13 @@ dig sigfail.ippacket.stream @localhost
 dig sigok.ippacket.stream @localhost
 ~~~
 
-## Disable log servfail after testing
+## Enable log servfail for testing if needed
 ~~~
-nano ~/docker/pihole/etc-unbound/unbound.conf
+docker exec -it unbound vi unbound.conf
 ~~~
 
 ~~~
-# log-servfail: yes
+log-servfail: yes
 ~~~
 
 ~~~
