@@ -29,6 +29,15 @@ echo '	read only = no' | sudo tee -a $SAMBACONF > /dev/null
 echo '	force user = john' | sudo tee -a $SAMBACONF > /dev/null
 echo '	public = no' | sudo tee -a $SAMBACONF > /dev/null
 echo '	guest ok = no' | sudo tee -a $SAMBACONF > /dev/null
+echo '[windows]' | sudo tee -a $SAMBACONF > /dev/null
+echo '	path = /share/Documents/Windows' | sudo tee -a $SAMBACONF > /dev/null
+echo '	available = yes' | sudo tee -a $SAMBACONF > /dev/null
+echo '	browseable = yes' | sudo tee -a $SAMBACONF > /dev/null
+echo '	writeable = yes' | sudo tee -a $SAMBACONF > /dev/null
+echo '	read only = no' | sudo tee -a $SAMBACONF > /dev/null
+echo '	force user = john' | sudo tee -a $SAMBACONF > /dev/null
+echo '	public = no' | sudo tee -a $SAMBACONF > /dev/null
+echo '	guest ok = no' | sudo tee -a $SAMBACONF > /dev/null
 ~~~
 
 ## Restart Samba
