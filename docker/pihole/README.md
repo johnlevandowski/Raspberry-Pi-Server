@@ -5,34 +5,6 @@
 https://dnscheck.tools/
 ~~~
 
-~~~
-dig fail01.dnssec.works @localhost
-dig dnssec.works @localhost
-~~~
-
-~~~
-dig sigfail.verteiltesysteme.net @localhost
-dig sigok.verteiltesysteme.net @localhost
-~~~
-
-~~~
-dig sigfail.ippacket.stream @localhost
-dig sigok.ippacket.stream @localhost
-~~~
-
-## Enable log servfail for testing if needed
-~~~
-docker exec -it unbound vi unbound.conf
-~~~
-
-~~~
-log-servfail: yes
-~~~
-
-~~~
-docker exec -it unbound unbound-control reload
-~~~
-
 ## Apple devices publish device dhcp hostname
 Wi-fi Network > Private Wi-Fi Address = OFF  
 

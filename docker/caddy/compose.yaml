@@ -1,7 +1,7 @@
 # adapted from https://hub.docker.com/_/caddy
 services:
   caddy:
-    image: jlevandowski/caddy-cloudflare:${CADDY_VERSION}
+    image: ghcr.io/johnlevandowski/caddy-cloudflare:${CADDY_VERSION}
     container_name: caddy
     hostname: caddy
     restart: unless-stopped
