@@ -17,13 +17,15 @@ services:
       - LANDOMAIN=${LANDOMAIN}
       - TSDOMAIN=${TSDOMAIN}
     volumes:
-      - $PWD/site:/srv
+      - ./site:/srv
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
     networks:
       caddy_network:
         ipv4_address: '172.21.21.2'
+    #secrets:
+    #  - CLOUDFLARE_API_TOKEN
 
 volumes:
   caddy_data:
@@ -32,3 +34,7 @@ volumes:
 networks:
   caddy_network:
     external: true
+
+#secrets:
+#  CLOUDFLARE_API_TOKEN:
+#    file: CLOUDFLARE_API_TOKEN
