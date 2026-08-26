@@ -1,20 +1,25 @@
-# Raspberry Pi Home Server Installation / Configuration Scripts [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/johnlevandowski/Raspberry-Pi-Server)
+Raspberry Pi Home Server Installation / Configuration Scripts [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/johnlevandowski/Raspberry-Pi-Server)
+===========================================================================================
 
 Notes for installing new OS:
 * Activate router DHCP and DNS so it's available on the network for setup
-* Copy these instructions to PC hard drive as the NAS will not be available
+* View these instructions on GitHub as the NAS will not be available
 * Copy docker .env file actual passwords/keys
 * Copy postfix password
 
+
 ## Operating System
-[Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit) (64-bit trixie) 2025-12-04
+
+[Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit) (64-bit trixie) 2026-06-18
+
 
 ## Install Preparation
+
 * Open [Raspberry Pi Imager](https://www.raspberrypi.org/software/) on remote computer
 * OS > Raspberry Pi OS (other) > Raspberry Pi OS Lite (64 bit)
-* Hostname = rpi5
+* Hostname = rpi5.lan.johnl.dev
 * Capital City = Washington, DC
-* Timezone = America/Boise - doesn't seem to work
+* Timezone = America/Boise
 * Keyboard layout = us
 * Username = john
 * Enable SSH = ON
@@ -25,153 +30,155 @@ Notes for installing new OS:
 
 https://www.raspberrypi.com/news/cloud-init-on-raspberry-pi-os/
 
-## Clone this repository
-~~~
-sudo apt install git
-mkdir install
-cd install
-git clone https://github.com/johnlevandowski/Raspberry-Pi-Server.git .
-~~~
 
 ## Installation / Configuration
 
-* Set Timezone - should be done by RPI Imager but doesn't seem to work
-~~~
-sudo raspi-config nonint do_change_timezone "America/Boise"
+* Update Pi OS
+
+```
+sudo apt update
+sudo apt full-upgrade -y
+```
+
+* Verify Hostname and update as needed  
+
+```
+hostnamectl
+sudo hostnamectl set-hostname rpi5.lan.johnl.dev
+```
+
+* Verify Timezone and update as needed
+
+```
 timedatectl
-~~~
+sudo raspi-config nonint do_change_timezone "America/Boise"
+```
 
 * Configure Locale - raspberry pi OS defaults to en_GB
-~~~
+
+```
 sudo raspi-config nonint do_change_locale "en_US.UTF-8 UTF-8"
-locale # will change after reboot
-~~~
+localectl status
+```
 
 * Disable IPv6 Network
-~~~
+
+```
 SYSCTLCONF="/etc/sysctl.d/70-disable-ipv6.conf"
 echo 'net.ipv6.conf.all.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
 echo 'net.ipv6.conf.default.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
 echo 'net.ipv6.conf.lo.disable_ipv6=1' | sudo tee -a $SYSCTLCONF > /dev/null
 echo ""
-sudo sysctl -p -f $SYSCTLCONF
+sudo sysctl --system
 echo ""
-ip address
-~~~
-
-* Increase buffer sizes for unbound so-rcvbuf and so-sndbuf
-```
-sudo micro /etc/sysctl.d/80-unbound.conf
-```
-
-```
-net.core.rmem_max=1048576
-net.core.wmem_max=4194304
-```
-
-```
-sudo service procps force-reload
-```
-
-* Set fixed IP address
-~~~
-sudo nmcli c show
-sudo nmcli c show "Wired connection 1"
-sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.2/24 ipv4.method manual
-sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
-sudo nmcli c mod "Wired connection 1" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
-sudo nmcli c mod "Wired connection 1" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
 sudo nmcli c mod "Wired connection 1" ipv6.method disabled
-sudo nmcli c show "Wired connection 1"
-sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
-~~~
 
-* Revert to DHCP IP address (when changing networks)
-~~~
-sudo nmcli c show
-sudo nmcli c show "Wired connection 1"
-sudo nmcli c mod "Wired connection 1" ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns "" ipv4.dns-options ""
-sudo nmcli c show "Wired connection 1"
-sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
-~~~
-
-* Set hostname in /etc/hosts  
-~~~
-sudo nano /etc/hosts
-~~~
-
-~~~
-127.0.1.1       rpi5.lan.johnl.dev rpi5
-~~~
-
-* Login with new IP Address
-
-* Update Pi OS
-~~~
-sudo apt update
-sudo apt full-upgrade -y
-sudo apt install bind9-dnsutils -y
-~~~
+ip addr
+```
 
 * Raspberry PI boot options
-~~~
+
+```
 BOOTCONF="/boot/firmware/config.txt"
 echo '' | sudo tee -a $BOOTCONF > /dev/null
 echo 'dtparam=sd_poll_once' | sudo tee -a $BOOTCONF > /dev/null
 echo 'dtoverlay=disable-wifi' | sudo tee -a $BOOTCONF > /dev/null
 echo 'dtoverlay=disable-bt' | sudo tee -a $BOOTCONF > /dev/null
 tail -n 4 $BOOTCONF
-~~~
+```
 
-* Change journald to persistent - rasperry pi OS now has systemd journald set to volatile by default
-~~~
-sudo nano /usr/lib/systemd/journald.conf.d/40-rpi-volatile-storage.conf
-Storage=persistent
-sudo systemctl restart systemd-journald
-~~~
+* Change systemd-journald to persistent and limit size
 
-* Reduce journald Journal Size
-~~~
+```
 sudo mkdir /etc/systemd/journald.conf.d
-JOURNALCONF="/etc/systemd/journald.conf.d/99-rpi.conf"
-echo '[Journal]' | sudo tee -a $JOURNALCONF > /dev/null
-echo 'SystemMaxUse=1000M' | sudo tee -a $JOURNALCONF > /dev/null
-sudo systemctl restart systemd-journald
-~~~
+sudo micro /etc/systemd/journald.conf.d/40-rpi-volatile-storage.conf
+```
 
-* Mount /tmp on tmpfs - default in debian 13
-~~~
-FSTAB="/etc/fstab"
-echo '' | sudo tee -a $FSTAB > /dev/null
-echo 'tmpfs /tmp tmpfs defaults,noatime,nosuid,nodev,noexec 0 0' | sudo tee -a $FSTAB > /dev/null
-tail -n 6 $FSTAB
-sudo rm -rfv /tmp
-~~~
+```
+[Journal]
+Storage=persistent
+SystemMaxUse=1000M
+```
+
+```
+systemd-analyze cat-config systemd/journald.conf
+sudo mkdir -p /var/log/journal
+sudo systemd-tmpfiles --create --prefix /var/log/journal
+sudo systemctl restart systemd-journald
+sudo journalctl --flush
+```
+
+
+## Restart rpi to boot into new config and install packages (so locale, etc are updated)
+
+```
+sudo apt install \
+fastfetch \
+micro \
+bind9-dnsutils -y
+```
+
+
+## Fixed IP address
+
+* Set fixed IP address
+
+```
+sudo nmcli c show
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c mod "Wired connection 1" ipv4.addresses 192.168.0.2/24 ipv4.method manual
+sudo nmcli c mod "Wired connection 1" ipv4.gateway 192.168.0.1
+sudo nmcli c mod "Wired connection 1" ipv4.dns "1.0.0.1 9.9.9.9" # use cloudflare and quad9 as centurylink fails on debian.org when using pihole/unbound
+sudo nmcli c mod "Wired connection 1" ipv4.dns-options "timeout:2" # 2 second timeout to try next dns server
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
+```
+
+* Revert to DHCP IP address (when changing networks)
+
+```
+sudo nmcli c show
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c mod "Wired connection 1" ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns "" ipv4.dns-options ""
+sudo nmcli c show "Wired connection 1"
+sudo nmcli c down "Wired connection 1" && sudo nmcli c up "Wired connection 1"
+```
+
+
+## Clone this repository
+
+```
+sudo apt install git
+git clone https://github.com/johnlevandowski/Raspberry-Pi-Server.git $HOME/Documents/GitHub/Raspberry-Pi-Server
+```
+
 
 ## microSD card optimizations
 
 * Disable swap when using microSD card
-~~~
+
+```
 sudo mkdir /etc/rpi/swap.conf.d
 SWAPCONF="/etc/rpi/swap.conf.d/99-disable-swap.conf"
 echo '[Main]' | sudo tee -a $SWAPCONF > /dev/null
 echo 'Mechanism=none' | sudo tee -a $SWAPCONF > /dev/null
-~~~
+```
 
 * Change timesyncd write interval (/var/lib/systemd/timesync/clock) when using microSD card
-~~~
+
+```
 sudo mkdir /etc/systemd/timesyncd.conf.d
 TIMECONF="/etc/systemd/timesyncd.conf.d/99-time-sync.conf"
 echo '[Time]' | sudo tee -a $TIMECONF > /dev/null
 echo 'SaveIntervalSec=60m' | sudo tee -a $TIMECONF > /dev/null
-~~~
+```
+
 
 ## Bootloader updates
 
-* Raspberry Pi bootloader EEPROM
-~~~
+```
 sudo rpi-eeprom-update
-~~~
+```
 
 * Reboot, then update EEPROM as needed using sudo rpi-eeprom-update -a and then reboot after updating
 
