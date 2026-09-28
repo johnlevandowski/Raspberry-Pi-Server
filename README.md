@@ -72,8 +72,6 @@ echo ""
 sudo sysctl --system
 echo ""
 sudo nmcli c mod "Wired connection 1" ipv6.method disabled
-
-ip addr
 ```
 
 * Raspberry PI boot options
@@ -109,13 +107,21 @@ sudo journalctl --flush
 ```
 
 
-## Restart rpi to boot into new config and install packages (so locale, etc are updated)
+## Restart rpi to boot into new config (so locale, IPv6, etc are updated)
+
+* Install packages 
 
 ```
 sudo apt install \
 fastfetch \
 micro \
 bind9-dnsutils -y
+```
+
+* Disable cloud-init on future boots
+
+```
+sudo touch /etc/cloud/cloud-init.disabled
 ```
 
 
@@ -155,13 +161,13 @@ git clone https://github.com/johnlevandowski/Raspberry-Pi-Server.git $HOME/Docum
 
 ## microSD card optimizations
 
-* Disable swap when using microSD card
+* Disable rpi-swap writing to /var/swap when using microSD card
 
 ```
 sudo mkdir /etc/rpi/swap.conf.d
 SWAPCONF="/etc/rpi/swap.conf.d/99-disable-swap.conf"
 echo '[Main]' | sudo tee -a $SWAPCONF > /dev/null
-echo 'Mechanism=none' | sudo tee -a $SWAPCONF > /dev/null
+echo 'Mechanism=zram' | sudo tee -a $SWAPCONF > /dev/null
 ```
 
 * Change timesyncd write interval (/var/lib/systemd/timesync/clock) when using microSD card
@@ -171,6 +177,12 @@ sudo mkdir /etc/systemd/timesyncd.conf.d
 TIMECONF="/etc/systemd/timesyncd.conf.d/99-time-sync.conf"
 echo '[Time]' | sudo tee -a $TIMECONF > /dev/null
 echo 'SaveIntervalSec=60m' | sudo tee -a $TIMECONF > /dev/null
+```
+
+* Find files written to
+
+```
+sudo find / -xdev -type f -mmin -60
 ```
 
 

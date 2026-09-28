@@ -1,3 +1,5 @@
 
 .DS_Store
 .env
+github-desktop-sync.bat
+github-linux-desktop-sync.sh
